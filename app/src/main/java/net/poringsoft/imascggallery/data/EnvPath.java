@@ -105,6 +105,39 @@ public class EnvPath {
     }
 
     /**
+     * リスト用アイコン画像（100x100ピクセル）の画像URLを取得する 
+     * @param hash 画像ハッシュキー
+     * @return URL
+     */
+    public static String getIdleIconImageUrl(String hash)
+    {
+        return "http://sp.pf-img-a.mbga.jp/12008305/?guid=ON&url=http%3A%2F%2F125.6.169.35%2Fidolmaster%2Fimage_sp%2Fcard%2Fxs%2F"
+                + hash + ".jpg";
+    }
+
+    /**
+     * カード画像表示用画像（640x800）の画像URLを取得する
+     * @param hash 画像ハッシュキー
+     * @return URL
+     */
+    public static String getIdleCardImageUrl(String hash)
+    {
+        return "http://sp.pf-img-a.mbga.jp/12008305/?guid=ON&url=http%3A%2F%2F125.6.169.35%2Fidolmaster%2Fimage_sp%2Fcard%2Fl%2F"
+                + hash + ".jpg";
+    }
+
+    /**
+     * カード画像の直リンク用画像URLを取得する
+     * @param hash 画像ハッシュキー
+     * @return URL
+     */
+    public static String getIdleCardImageUrlDirect(String hash)
+    {
+        return "http://125.6.169.35/idolmaster/image_sp/card/l/"
+                + hash + ".jpg";
+    }
+
+    /**
      * カード画像保存ファイルパス
      * @param fileName 画像ファイル名
      * @return 画像ファイルパス

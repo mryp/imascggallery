@@ -4,7 +4,7 @@
     <dimen name="navigation_drawer_width">300dp</dimen>
 
     <dimen name="main_list_color_bar_width">10dp</dimen>
-    <dimen name="main_list_image_height">100dp</dimen>
-    <dimen name="main_list_image_width">75dp</dimen>
+    <dimen name="main_list_image_height">70dp</dimen>
+    <dimen name="main_list_image_width">70dp</dimen>
 
 </resources>
