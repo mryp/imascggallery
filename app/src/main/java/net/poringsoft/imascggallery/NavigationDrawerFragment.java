@@ -1,10 +1,11 @@
 package net.poringsoft.imascggallery;
 
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
@@ -22,51 +23,68 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.poringsoft.imascggallery.utils.PSDebug;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * Fragment used for managing interactions for and presentation of a navigation drawer.
- * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
- * design guidelines</a> for a complete explanation of the behaviors implemented here.
+ * ナビゲーションメニュー（メイン画面用）
  */
 public class NavigationDrawerFragment extends Fragment {
-
-    /**
-     * Remember the position of the selected item.
-     */
+    //定数
+    //-------------------------------------------------------------
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    /**
-     * Per the design guidelines, you should show the drawer on launch until the user manually
-     * expands it. This shared preference tracks this.
-     */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    public static final int FIRST_SELECT_POSITION = 1;
 
-    /**
-     * A pointer to the current callbacks instance (the Activity).
-     */
+    private static final Map<String, String> DEF_MAP_FAVORITE = new LinkedHashMap<String, String>(){
+        {
+            put("お気に入り", "お気に入り");
+        }
+    };
+
+    private static final Map<String, String> DEF_MAP_GROUP = new LinkedHashMap<String, String>(){
+        {
+            put("アニメ", "アニメ");
+            put("キュート", "キュート");
+            put("クール", "クール");
+            put("パッション", "パッション");
+        }
+    };
+    
+    //フィールド
+    //------------------------------------------------------------
     private NavigationDrawerCallbacks mCallbacks;
-
-    /**
-     * Helper component that ties the action bar to the navigation drawer.
-     */
     private ActionBarDrawerToggle mDrawerToggle;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = FIRST_SELECT_POSITION;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+
+    //メソッド
+    //--------------------------------------------------------------
+    /**
+     * コンストラクタ
+     */
     public NavigationDrawerFragment() {
     }
 
+    /**
+     * 起動時イベント
+     * @param savedInstanceState セーブデータ
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Read in the flag indicating whether or not the user has demonstrated awareness of the
-        // drawer. See PREF_USER_LEARNED_DRAWER for details.
+        PSDebug.d("call");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
@@ -74,42 +92,150 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
+    /**
+     * 画面起動時イベント
+     * @param savedInstanceState セーブデータ
+     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Indicate that this fragment would like to influence the set of actions in the action bar.
+        PSDebug.d("call");
         setHasOptionsMenu(true);
+
+        if (savedInstanceState == null) {
+            resetNaviSelectPos(FIRST_SELECT_POSITION);
+        }
     }
 
+    /**
+     * 画面復旧時
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onResume() {
+        super.onResume();
+        PSDebug.d("call");
+
+        if (mDrawerListView.getAdapter() == null) {
+            resetListAdapter();
+        }
+    }
+
+    /**
+     * アダプターを設定する
+     */
+    private void resetListAdapter() {
+        ReadNaviListAsyncTask naviTask = new ReadNaviListAsyncTask();
+        naviTask.execute("");
+    }
+
+    /**
+     * ナビゲーションの位置をリセットする
+     * @param pos
+     */
+    public void resetNaviSelectPos(int pos) {
+        if (pos != -1) {
+            mCurrentSelectedPosition = pos;
+        }
+        resetListAdapter();
+    }
+
+    /**
+     * ビューの生成時イベント
+     * @param inflater 親画面操作
+     * @param container 親コンテナ
+     * @param savedInstanceState セーブデータ
+     * @return 生成したビューオブジェクト
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        PSDebug.d("call");
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
-            }
-        });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
 
+    /**
+     * カード詳細一覧画面からカード情報をダウンロードする
+     */
+    public class ReadNaviListAsyncTask extends AsyncTask<String, String, NavigationListAdapter> {
+        /**
+         * 実処理
+         * @param text
+         * @return
+         */
+        @Override
+        protected NavigationListAdapter doInBackground(String... text) {
+            PSDebug.d("call");
+            return createNavigationAdapter();
+        }
+
+        /**
+         * 後処理
+         * @param result
+         */
+        @Override
+        protected void onPostExecute(NavigationListAdapter result) {
+            PSDebug.d("call");
+            mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    selectItem(position);
+                }
+            });
+            mDrawerListView.setAdapter(result);
+            mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+            selectItem(mCurrentSelectedPosition);
+        }
+    }
+
+    /**
+     * リストを再描画する
+     */
+    public void listChanged() {
+        if (mDrawerListView.getAdapter() != null) {
+            ((NavigationListAdapter) mDrawerListView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+    
+    /**
+     * ナビゲーション用リストを生成して返す
+     * @return アダプター
+     */
+    private NavigationListAdapter createNavigationAdapter() {
+        PSDebug.d("call");
+        List<NaviSectionHeaderData> sectionList = new ArrayList<NaviSectionHeaderData>();
+        List<List<NaviSectionRowData>> rowList = new ArrayList<List<NaviSectionRowData>>();
+
+        sectionList.add(new NaviSectionHeaderData("お気に入り"));
+        rowList.add(setNaviList(DEF_MAP_FAVORITE));
+
+        sectionList.add(new NaviSectionHeaderData("グループ"));
+        rowList.add(setNaviList(DEF_MAP_GROUP));
+
+        return new NavigationListAdapter(getActivity(), sectionList, rowList);
+    }
+
+    /**
+     * ナビゲーションリストを生成する 
+     * @param defList 固定リストテーブル
+     * @return ナビゲーションリスト 
+     */
+    private List<NaviSectionRowData> setNaviList(Map<String, String> defList)
+    {
+        List<NaviSectionRowData> sectionList = new ArrayList<NaviSectionRowData>();
+        for (Map.Entry<String, String> defdata : defList.entrySet()) {
+            sectionList.add(new NaviSectionRowData(defdata.getValue(), defdata.getKey()));
+        }
+
+        return sectionList;
+    }
+
+    /**
+     * ドロワーがオープン状態かどうか
+     * @return 開いているときはtrue
+     */
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
@@ -134,13 +260,8 @@ public class NavigationDrawerFragment extends Fragment {
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
-        mDrawerToggle = new ActionBarDrawerToggle(
-                getActivity(),                    /* host Activity */
-                mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
-                R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
-                R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
-        ) {
+        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.app_name, R.string.app_name)
+        {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
@@ -170,7 +291,8 @@ public class NavigationDrawerFragment extends Fragment {
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
-
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
         if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
@@ -187,8 +309,12 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
-
-    private void selectItem(int position) {
+    
+    /**
+     * リストアイテム選択時処理
+     * @param position リスト位置
+     */
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
@@ -196,11 +322,21 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+        if (mCallbacks != null && mDrawerListView != null) {
+            Object item = mDrawerListView.getItemAtPosition(position);
+            if (item != null && item.getClass() == NaviSectionRowData.class)
+            {
+                //選択した項目を上位に通知する
+                NaviSectionRowData rowData = (NaviSectionRowData)item;
+                mCallbacks.onNavigationDrawerItemSelected(rowData.getLabel(), rowData.getSearchText());
+            }
         }
     }
 
+    /**
+     * 画面アタッチ時
+     * @param activity 親画面
+     */
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -211,18 +347,29 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    /**
+     * 画面デタッチ時
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
     }
 
+    /**
+     * 現在設定値保存
+     * @param outState 保存先データ
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
+    /**
+     * 設定変更時処理
+     * @param newConfig 新しい設定値
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -230,6 +377,11 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /**
+     * メニュー生成時処理
+     * @param menu 親メニュー
+     * @param inflater コンテナ操作
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // If the drawer is open, show the global app actions in the action bar. See also
@@ -241,14 +393,14 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    /**
+     * メニュー項目選択時処理
+     * @param item 選択メニュー
+     * @return 処理したかどうか
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -256,8 +408,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
+     * ActionBar生成
      */
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();
@@ -265,18 +416,22 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
     }
-
+    
+    /**
+     * ActionBarを取得する
+     * @return アクションバーオブジェクト
+     */
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
     /**
-     * Callbacks interface that all activities using this fragment must implement.
+     * 選択項目上位通知用インターフェース
      */
     public static interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */
-        void onNavigationDrawerItemSelected(int position);
+        void onNavigationDrawerItemSelected(String title, String searchText);
     }
 }
