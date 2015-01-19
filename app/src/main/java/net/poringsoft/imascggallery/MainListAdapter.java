@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.poringsoft.imascggallery.data.EnvPath;
-import net.poringsoft.imascggallery.data.IdleInfo;
+import net.poringsoft.imascggallery.data.IdleCardInfo;
 
 import java.util.ArrayList;
 
@@ -23,13 +23,13 @@ import java.util.ArrayList;
 public class MainListAdapter  extends BaseAdapter {
 
     private LayoutInflater m_layoutInf;
-    private ArrayList<IdleInfo> m_idleList;
+    private ArrayList<IdleCardInfo> m_idleList;
     private boolean m_asyncImageClear = false;
 
     /**
      * コンストラクタ
      */
-    public MainListAdapter(Context context, ArrayList<IdleInfo> cardList) {
+    public MainListAdapter(Context context, ArrayList<IdleCardInfo> cardList) {
         m_idleList = cardList;
         m_layoutInf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         m_asyncImageClear = false;//EnvOption.getCardListAsyncImageDel(context);
@@ -73,7 +73,7 @@ public class MainListAdapter  extends BaseAdapter {
      */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        IdleInfo info = m_idleList.get(i);
+        IdleCardInfo info = m_idleList.get(i);
         if (view == null) {
             view = m_layoutInf.inflate(R.layout.main_list_item, null);
         }
@@ -109,7 +109,7 @@ public class MainListAdapter  extends BaseAdapter {
      * @param info アイドル情報
      * @return タイトル部
      */
-    private String getTitleText(IdleInfo info)
+    private String getTitleText(IdleCardInfo info)
     {
         return info.getName();
     }
@@ -119,7 +119,7 @@ public class MainListAdapter  extends BaseAdapter {
      * @param info アイドル情報
      * @return 説明部
      */
-    private String getBodyText(IdleInfo info)
+    private String getBodyText(IdleCardInfo info)
     {
         String bodyText = "プロフィール";
         return bodyText;

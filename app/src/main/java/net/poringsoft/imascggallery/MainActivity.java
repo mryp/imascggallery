@@ -23,7 +23,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import net.poringsoft.imascggallery.data.EnvPath;
+import net.poringsoft.imascggallery.data.IdleCardHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
+import net.poringsoft.imascggallery.utils.PSUtils;
 
 
 public class MainActivity extends ActionBarActivity
@@ -244,6 +247,9 @@ public class MainActivity extends ActionBarActivity
             case R.id.action_settings:
                 startSetting();
                 return true;
+            case R.id.action_update:
+                startUpdate();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -267,6 +273,17 @@ public class MainActivity extends ActionBarActivity
         //this.startActivityForResult(intent, REQ_CODE_PREF);
     }
 
+    private void startUpdate() {
+        IdleCardHelper idleHelper = new IdleCardHelper();
+        boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getHashFilePath());
+        if (ret == false) {
+            PSUtils.toast(this, "読み込みに失敗しました。。。");
+            return;
+        }
+        
+        PSUtils.toast(this, "更新に成功しました");
+    }
+    
     /**
      * 画面戻りイベント
      * @param requestCode 呼び出し元（この画面で指定）コード

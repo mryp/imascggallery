@@ -111,6 +111,22 @@ public class PSUtils {
 
         return ret;
     }
+    
+    public static double tryParseDouble(String text, double def)
+    {
+        double ret = 0.0;
+        try
+        {
+            ret = Double.parseDouble(text);
+        }
+        catch (Exception e)
+        {
+            ret = def;
+        }
+
+        return ret;
+    }
+
 
     /**
      * 文字列リストを整数リストとして降順で並び替える

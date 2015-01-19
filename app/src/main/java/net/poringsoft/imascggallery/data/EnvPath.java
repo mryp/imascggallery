@@ -14,15 +14,16 @@ import java.net.URL;
 public class EnvPath {
     //定数
     //---------------------------------------------------------
-    private static final String NAME_NOMEDIA_FILE = ".nomedia";	//画像非表示用ファイル
-    private static final String NAME_CARD_IMAGE_DIR = "card";	//カード画像
-    private static final String NAME_MAIN_DIR = "imascgg";      //メインフォルダ名
+    private static final String NAME_NOMEDIA_FILE = ".nomedia"; 	//画像非表示用ファイル
+    private static final String NAME_MAIN_DIR = "imascggallery";    //メインフォルダ名
+
+    private static final String NAME_ALBUM_CSV = "main.csv";        //アルバムデータファイル名
+    private static final String NAME_HASH_JSON = "id2hash.json";    //ハッシュリストデータファイル名
 
 
     //フィールド
     //---------------------------------------------------------
     private static String m_rootDir = "";
-    private static String m_cardImageDir = "";
 
 
     //メソッド
@@ -32,7 +33,6 @@ public class EnvPath {
      */
     public static void init() {
         m_rootDir = "";
-        m_cardImageDir = "";
     }
 
     /**
@@ -91,17 +91,15 @@ public class EnvPath {
 
         return dirPath;
     }
-
-    /**
-     * カード画像保存フォルダパス
-     * @return カード画像保存ディレクトリパス
-     */
-    public static String getCardImageDir() {
-        if (m_cardImageDir.equals("")) {
-            m_cardImageDir = getDirPath(getRootDirPath() + NAME_CARD_IMAGE_DIR);
-        }
-
-        return m_cardImageDir;
+    
+    public static String getAlbumFilePath()
+    {
+        return getRootDirPath() + NAME_ALBUM_CSV;
+    }
+    
+    public static String getHashFilePath()
+    {
+        return getRootDirPath() + NAME_HASH_JSON;
     }
 
     /**
@@ -135,16 +133,6 @@ public class EnvPath {
     {
         return "http://125.6.169.35/idolmaster/image_sp/card/l/"
                 + hash + ".jpg";
-    }
-
-    /**
-     * カード画像保存ファイルパス
-     * @param fileName 画像ファイル名
-     * @return 画像ファイルパス
-     */
-    public static String getCardImageFile(String fileName)
-    {
-        return getCardImageDir() + fileName;
     }
 
     /**

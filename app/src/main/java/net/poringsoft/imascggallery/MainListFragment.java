@@ -15,7 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import net.poringsoft.imascggallery.data.IdleInfo;
+import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.SqlAccessManager;
 import net.poringsoft.imascggallery.utils.PSDebug;
 
@@ -211,7 +211,7 @@ public class MainListFragment extends ListFragment {
         if (position < 0) {
             return; //ヘッダ部なので何もしない
         }
-        IdleInfo selectInfo = (IdleInfo)m_adapter.getItem(position);
+        IdleCardInfo selectInfo = (IdleCardInfo)m_adapter.getItem(position);
 
         //TODO: 詳細画面へ遷移する（未実装）
         /*
@@ -234,7 +234,7 @@ public class MainListFragment extends ListFragment {
     /**
      * カード詳細一覧画面からカード情報をダウンロードする
      */
-    public class ReadCardListAsyncTask extends AsyncTask<String, String, ArrayList<IdleInfo>> {
+    public class ReadCardListAsyncTask extends AsyncTask<String, String, ArrayList<IdleCardInfo>> {
         private String m_taskSearchText = "";
 
         /**
@@ -255,11 +255,11 @@ public class MainListFragment extends ListFragment {
          * @return 検索により取得したカードデータ
          */
         @Override
-        protected ArrayList<IdleInfo> doInBackground(String... text) {
+        protected ArrayList<IdleCardInfo> doInBackground(String... text) {
             String searchText = text[0];
             m_taskSearchText = searchText;
             PSDebug.d("searchText=" + searchText);
-            ArrayList<IdleInfo> cardInfoList = new ArrayList<IdleInfo>();
+            ArrayList<IdleCardInfo> cardInfoList = new ArrayList<IdleCardInfo>();
             try
             {
                 cardInfoList.addAll(m_sqlManager.selectIdleInfo(searchText));
@@ -278,7 +278,7 @@ public class MainListFragment extends ListFragment {
          * @param result カードデータリスト
          */
         @Override
-        protected void onPostExecute(ArrayList<IdleInfo> result) {
+        protected void onPostExecute(ArrayList<IdleCardInfo> result) {
             if (result == null)
             {
                 String messageText = "検索処理に失敗しました";
