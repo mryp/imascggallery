@@ -1,5 +1,7 @@
 package net.poringsoft.imascggallery.data;
 
+import android.content.Context;
+
 import net.poringsoft.imascggallery.utils.PSDebug;
 import net.poringsoft.imascggallery.utils.PSUtils;
 
@@ -17,11 +19,10 @@ import java.util.ArrayList;
  * Created by mry on 15/01/19.
  */
 public class IdleCardHelper {
+    private Context m_context;
     
-    
-    public IdleCardHelper() {
-        
-        
+    public IdleCardHelper(Context context) {
+        m_context = context;
     }
     
     public boolean loadFile(String mainCsvPath, String hashJsonPath) {
@@ -35,6 +36,8 @@ public class IdleCardHelper {
             return false;
         }
         
+        SqlAccessManager sqlManager = new SqlAccessManager(m_context);
+        sqlManager.insertIdleCardInfoList(infoList);
         return true;
     }
     

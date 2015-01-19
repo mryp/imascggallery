@@ -274,7 +274,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void startUpdate() {
-        IdleCardHelper idleHelper = new IdleCardHelper();
+        IdleCardHelper idleHelper = new IdleCardHelper(this);
         boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getHashFilePath());
         if (ret == false) {
             PSUtils.toast(this, "読み込みに失敗しました。。。");

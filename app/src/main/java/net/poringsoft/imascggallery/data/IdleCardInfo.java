@@ -290,11 +290,10 @@ public class IdleCardInfo {
     }
     
     public String getCardUrl() {
-        return "";
+        return EnvPath.getIdleCardImageUrl(m_imageHash);
     }
     
     public String getIconUrl() {
-        //TODO: ハッシュキーは仮
-        return EnvPath.getIdleIconImageUrl("519e953aad9d655e2d34f86a8d0ec5b8");
+        return EnvPath.getIdleIconImageUrl(m_imageHash);
     }
 }

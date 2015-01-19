@@ -26,6 +26,33 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
             + "m_uptime integer"
             + ")";
 
+    /**
+     * カード情報データ
+     */
+    private static final String CREATE_SQL_IDLE_CARD_DATA = "create table idlecard"
+            + "("
+            + "rowid integer primary key autoincrement, "
+            + "m_albumId integer,"
+            + "m_attribute text,"
+            + "m_rarity text,"
+            + "m_namePrefix text,"
+            + "m_name text,"
+            + "m_namePost text,"
+            + "m_cost integer,"
+            + "m_attack integer,"
+            + "m_defense integer,"
+            + "m_maxAttack integer,"
+            + "m_maxDefense integer,"
+            + "m_maxConfirmed text,"
+            + "m_attackCospa real,"
+            + "m_defenseCospa real,"
+            + "m_skillName text,"
+            + "m_targetAttr text,"
+            + "m_attdefType text,"
+            + "m_skillEffect text,"
+            + "m_remarks text,"
+            + "m_imageHash text"
+            + ")";
 
     //メソッド
     //-------------------------------------------------------
@@ -62,6 +89,7 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
     private void createTableVer1(SQLiteDatabase db)
     {
         db.execSQL(CREATE_SQL_FAVORITE_DATA);
+        db.execSQL(CREATE_SQL_IDLE_CARD_DATA);
     }
 
     /**

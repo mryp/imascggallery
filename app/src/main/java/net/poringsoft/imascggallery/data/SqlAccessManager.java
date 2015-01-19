@@ -125,7 +125,35 @@ public class SqlAccessManager {
     
     //アイドル情報関連
     //---------------------------------------------
+    public void insertIdleCardInfoList(List<IdleCardInfo> infoList)
+    {
+        SqlDao dao = open(OPEN_MODE_READWRITE);
+        if (dao == null)
+        {
+            return;
+        }
 
+        dao.beginTransaction();
+        try
+        {
+            //一旦全削除
+            dao.deleteIdleCardInfoAll();
+            
+            //すべて追加
+            for (IdleCardInfo info : infoList)
+            {
+                dao.insertIdleCardInfo(info);
+            }
+
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+    }
+    
     public List<IdleCardInfo> selectIdleInfo(String searchText)
     {
         SqlDao dao = open(OPEN_MODE_READONLY);
@@ -138,15 +166,16 @@ public class SqlAccessManager {
         dao.beginTransaction();
         try
         {
-            infoList = new ArrayList<>();
+            infoList = dao.selectIdleCardInfo(null, null, "10");
 
-            //TODO: とりあえずテストのため適当に追加
+            /*
             infoList.add(new IdleCardInfo());
             infoList.add(new IdleCardInfo());
             infoList.add(new IdleCardInfo());
             infoList.add(new IdleCardInfo());
             infoList.add(new IdleCardInfo());
-
+            */
+            
             dao.setTransactionSuccessful();
         }
         finally
