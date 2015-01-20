@@ -154,7 +154,7 @@ public class SqlAccessManager {
         }
     }
     
-    public List<IdleCardInfo> selectIdleInfo(String searchText)
+    public List<IdleCardInfo> selectIdleCardInfo(String searchText)
     {
         SqlDao dao = open(OPEN_MODE_READONLY);
         if (dao == null)
@@ -167,15 +167,6 @@ public class SqlAccessManager {
         try
         {
             infoList = dao.selectIdleCardInfo(null, null, "10");
-
-            /*
-            infoList.add(new IdleCardInfo());
-            infoList.add(new IdleCardInfo());
-            infoList.add(new IdleCardInfo());
-            infoList.add(new IdleCardInfo());
-            infoList.add(new IdleCardInfo());
-            */
-            
             dao.setTransactionSuccessful();
         }
         finally
@@ -186,6 +177,60 @@ public class SqlAccessManager {
 
         return infoList;
     }
-    
-    
+
+
+    //アイドルプロフィール関連
+    //---------------------------------------------
+    public void insertIdleProfileInfoList(List<IdleProfileInfo> infoList)
+    {
+        SqlDao dao = open(OPEN_MODE_READWRITE);
+        if (dao == null)
+        {
+            return;
+        }
+
+        dao.beginTransaction();
+        try
+        {
+            //一旦全削除
+            dao.deleteIdleProfileInfoAll();
+
+            //すべて追加
+            for (IdleProfileInfo info : infoList)
+            {
+                dao.insertIdleProfileInfo(info);
+            }
+
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+    }
+
+    public List<IdleProfileInfo> selectIdleProfileInfo(String searchText)
+    {
+        SqlDao dao = open(OPEN_MODE_READONLY);
+        if (dao == null)
+        {
+            return new ArrayList<IdleProfileInfo>();
+        }
+
+        List<IdleProfileInfo> infoList;
+        dao.beginTransaction();
+        try
+        {
+            infoList = dao.selectIdleProfileInfoAll();
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+
+        return infoList;
+    }
 }

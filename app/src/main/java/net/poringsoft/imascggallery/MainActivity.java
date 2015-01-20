@@ -24,7 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import net.poringsoft.imascggallery.data.EnvPath;
-import net.poringsoft.imascggallery.data.IdleCardHelper;
+import net.poringsoft.imascggallery.data.IdleInfoLoader;
 import net.poringsoft.imascggallery.utils.PSDebug;
 import net.poringsoft.imascggallery.utils.PSUtils;
 
@@ -274,8 +274,8 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void startUpdate() {
-        IdleCardHelper idleHelper = new IdleCardHelper(this);
-        boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getHashFilePath());
+        IdleInfoLoader idleHelper = new IdleInfoLoader(this);
+        boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getProfileFilePath(), EnvPath.getHashFilePath());
         if (ret == false) {
             PSUtils.toast(this, "読み込みに失敗しました。。。");
             return;

@@ -271,8 +271,7 @@ public class IdleCardInfo {
     public void setImageHash(String imageHash) {
         m_imageHash = imageHash;
     }
-
-
+    
     //メソッド
     //---------------------------------------------------
     /**
@@ -289,6 +288,7 @@ public class IdleCardInfo {
         return 0xFFF04228;
     }
     
+    /*
     public String getCardUrl() {
         return EnvPath.getIdleCardImageUrl(m_imageHash);
     }
@@ -296,4 +296,5 @@ public class IdleCardInfo {
     public String getIconUrl() {
         return EnvPath.getIdleIconImageUrl(m_imageHash);
     }
+    */
 }

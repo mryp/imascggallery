@@ -18,6 +18,7 @@ public class EnvPath {
     private static final String NAME_MAIN_DIR = "imascggallery";    //メインフォルダ名
 
     private static final String NAME_ALBUM_CSV = "main.csv";        //アルバムデータファイル名
+    private static final String NAME_PROFILE_CSV = "profile.csv";   //アイドルプロフィールファイル名
     private static final String NAME_HASH_JSON = "id2hash.json";    //ハッシュリストデータファイル名
 
 
@@ -95,6 +96,10 @@ public class EnvPath {
     public static String getAlbumFilePath()
     {
         return getRootDirPath() + NAME_ALBUM_CSV;
+    }
+    
+    public static String getProfileFilePath() {
+        return getRootDirPath() + NAME_PROFILE_CSV;
     }
     
     public static String getHashFilePath()

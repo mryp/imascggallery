@@ -3,13 +3,6 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/colorBar"
-        android:orientation="vertical"
-        android:background="#FF0000"
-        android:layout_width="@dimen/main_list_color_bar_width"
-        android:layout_height="match_parent">
-    </LinearLayout>
     <ImageView
         android:layout_width="@dimen/main_list_image_width"
         android:layout_height="@dimen/main_list_image_height"

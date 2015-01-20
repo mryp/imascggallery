@@ -13,6 +13,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleCardInfo;
+import net.poringsoft.imascggallery.data.IdleProfileInfo;
+import net.poringsoft.imascggallery.utils.PSDebug;
 
 import java.util.ArrayList;
 
@@ -23,16 +25,18 @@ import java.util.ArrayList;
 public class MainListAdapter  extends BaseAdapter {
 
     private LayoutInflater m_layoutInf;
-    private ArrayList<IdleCardInfo> m_idleList;
+    private ArrayList<IdleProfileInfo> m_idleList;
     private boolean m_asyncImageClear = false;
+    private boolean m_showBirthday = false;
 
     /**
      * コンストラクタ
      */
-    public MainListAdapter(Context context, ArrayList<IdleCardInfo> cardList) {
+    public MainListAdapter(Context context, ArrayList<IdleProfileInfo> cardList) {
         m_idleList = cardList;
         m_layoutInf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        m_asyncImageClear = false;//EnvOption.getCardListAsyncImageDel(context);
+        m_asyncImageClear = true;//EnvOption.getCardListAsyncImageDel(context);
+        m_showBirthday = false;
     }
 
     /**
@@ -73,7 +77,7 @@ public class MainListAdapter  extends BaseAdapter {
      */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        IdleCardInfo info = m_idleList.get(i);
+        IdleProfileInfo info = m_idleList.get(i);
         if (view == null) {
             view = m_layoutInf.inflate(R.layout.main_list_item, null);
         }
@@ -81,23 +85,21 @@ public class MainListAdapter  extends BaseAdapter {
             return null;
         }
 
-        //カラーバー
-        LinearLayout colorBar = (LinearLayout)view.findViewById(R.id.colorBar);
-        colorBar.setBackgroundColor(info.getColor());
-
         //カード画像
         ImageView cardImage = (ImageView)view.findViewById(R.id.cardImageView);
         if (m_asyncImageClear) {
             cardImage.setImageBitmap(null);
         }
-        ImageLoader.getInstance().displayImage(info.getIconUrl(), cardImage);
-
-        //カードタイトル部
+        if (!info.getImageHash().equals("")) {
+            ImageLoader.getInstance().displayImage(EnvPath.getIdleIconImageUrl(info.getImageHash()), cardImage);
+        }
+        
+        //名前部
         TextView text = (TextView)view.findViewById(R.id.titleTextView);
         text.setText(getTitleText(info));
         text.setTextColor(0xFF000000);
 
-        //カード説明部
+        //プロフィール部
         TextView subText = (TextView)view.findViewById(R.id.subTextView);
         subText.setText(getBodyText(info));
 
@@ -109,9 +111,9 @@ public class MainListAdapter  extends BaseAdapter {
      * @param info アイドル情報
      * @return タイトル部
      */
-    private String getTitleText(IdleCardInfo info)
+    private String getTitleText(IdleProfileInfo info)
     {
-        return info.getName();
+        return info.getName() + " (" + info.getKana() + ")";
     }
 
     /**
@@ -119,9 +121,29 @@ public class MainListAdapter  extends BaseAdapter {
      * @param info アイドル情報
      * @return 説明部
      */
-    private String getBodyText(IdleCardInfo info)
+    private String getBodyText(IdleProfileInfo info)
     {
-        String bodyText = "プロフィール";
-        return bodyText;
+        String birthdayText = "";
+        if (m_showBirthday)
+        {
+            birthdayText = "\n誕生日：" + info.getBirthday() + " (" + info.getConstellation() + ")";
+        }
+        
+        return getIntegerText(info.getAgo()) + "歳 " 
+                + getIntegerText(info.getHeight()) + "cm " 
+                + getIntegerText(info.getWeight()) + "kg "
+                + "B" + getIntegerText(info.getBust()) + "/W" + getIntegerText(info.getWaist()) + "/H" + getIntegerText(info.getHip())
+                + birthdayText;
+    }
+    
+    private String getIntegerText(int value)
+    {
+        String text = String.valueOf(value);
+        if (value == 0)
+        {
+            text = "？";
+        }
+        
+        return text;
     }
 }

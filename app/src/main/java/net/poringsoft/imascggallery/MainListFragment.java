@@ -16,8 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import net.poringsoft.imascggallery.data.IdleCardInfo;
+import net.poringsoft.imascggallery.data.IdleProfileInfo;
 import net.poringsoft.imascggallery.data.SqlAccessManager;
 import net.poringsoft.imascggallery.utils.PSDebug;
+import net.poringsoft.imascggallery.utils.PSUtils;
 
 import java.util.ArrayList;
 
@@ -211,7 +213,8 @@ public class MainListFragment extends ListFragment {
         if (position < 0) {
             return; //ヘッダ部なので何もしない
         }
-        IdleCardInfo selectInfo = (IdleCardInfo)m_adapter.getItem(position);
+        IdleProfileInfo selectInfo = (IdleProfileInfo)m_adapter.getItem(position);
+        PSUtils.toast(getActivity(), selectInfo.getName() + "を詳細表示します");
 
         //TODO: 詳細画面へ遷移する（未実装）
         /*
@@ -234,7 +237,7 @@ public class MainListFragment extends ListFragment {
     /**
      * カード詳細一覧画面からカード情報をダウンロードする
      */
-    public class ReadCardListAsyncTask extends AsyncTask<String, String, ArrayList<IdleCardInfo>> {
+    public class ReadCardListAsyncTask extends AsyncTask<String, String, ArrayList<IdleProfileInfo>> {
         private String m_taskSearchText = "";
 
         /**
@@ -255,22 +258,22 @@ public class MainListFragment extends ListFragment {
          * @return 検索により取得したカードデータ
          */
         @Override
-        protected ArrayList<IdleCardInfo> doInBackground(String... text) {
+        protected ArrayList<IdleProfileInfo> doInBackground(String... text) {
             String searchText = text[0];
             m_taskSearchText = searchText;
             PSDebug.d("searchText=" + searchText);
-            ArrayList<IdleCardInfo> cardInfoList = new ArrayList<IdleCardInfo>();
+            ArrayList<IdleProfileInfo> infoList = new ArrayList<IdleProfileInfo>();
             try
             {
-                cardInfoList.addAll(m_sqlManager.selectIdleInfo(searchText));
+                infoList.addAll(m_sqlManager.selectIdleProfileInfo(searchText));
             }
             catch (Exception e)
             {
                 PSDebug.d("カード検索処理例が発生 e=" + e.getMessage());
-                cardInfoList = null;
+                infoList = null;
             }
 
-            return cardInfoList;
+            return infoList;
         }
 
         /**
@@ -278,7 +281,7 @@ public class MainListFragment extends ListFragment {
          * @param result カードデータリスト
          */
         @Override
-        protected void onPostExecute(ArrayList<IdleCardInfo> result) {
+        protected void onPostExecute(ArrayList<IdleProfileInfo> result) {
             if (result == null)
             {
                 String messageText = "検索処理に失敗しました";

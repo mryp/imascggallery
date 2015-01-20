@@ -25,7 +25,7 @@ public class SqlDao {
 
     //テーブル定数
     //----------------------------------------------------------------------------
-    public static final String IDLE_CARD_TABLE_MAME = "idlecard";
+    public static final String IDLE_CARD_TABLE_MAME = "idlecardtbl";
     public static final String IDLE_CARD_COLUMN_ID = "rowid";
     public static final String IDLE_CARD_COLUMN_ALBUM_ID = "m_albumId";
     public static final String IDLE_CARD_COLUMN_ATTRIBUTE = "m_attribute";
@@ -71,6 +71,44 @@ public class SqlDao {
             IDLE_CARD_COLUMN_IMAGE_HASH,
     };
 
+
+    public static final String IDLE_PROFILE_TABLE_MAME = "idleprofiletbl";
+    public static final String IDLE_PROFILE_COLUMN_ID = "rowid";
+    public static final String IDLE_PROFILE_COLUMN_NAME = "m_name";
+    public static final String IDLE_PROFILE_COLUMN_KANA = "m_kana";
+    public static final String IDLE_PROFILE_COLUMN_AGO = "m_ago";
+    public static final String IDLE_PROFILE_COLUMN_HEIGHT = "m_height";
+    public static final String IDLE_PROFILE_COLUMN_WEIGHT = "m_weight";
+    public static final String IDLE_PROFILE_COLUMN_BUST = "m_bust";
+    public static final String IDLE_PROFILE_COLUMN_WAIST = "m_waist";
+    public static final String IDLE_PROFILE_COLUMN_HIP = "m_hip";
+    public static final String IDLE_PROFILE_COLUMN_BIRTHDAY = "m_birthday";
+    public static final String IDLE_PROFILE_COLUMN_COLSTELLATION = "m_constellation";
+    public static final String IDLE_PROFILE_COLUMN_BLOODTYPE = "m_bloodType";
+    public static final String IDLE_PROFILE_COLUMN_HAND = "m_hand";
+    public static final String IDLE_PROFILE_COLUMN_HOME = "m_home";
+    public static final String IDLE_PROFILE_COLUMN_HOBBY = "m_hobby";
+    public static final String IDLE_PROFILE_COLUMN_IMAGE_HASH = "m_imageHash";
+    public static final String[] IDLE_PROFILE_COLUMNS = {
+            IDLE_PROFILE_COLUMN_ID,
+            IDLE_PROFILE_COLUMN_NAME,
+            IDLE_PROFILE_COLUMN_KANA,
+            IDLE_PROFILE_COLUMN_AGO,
+            IDLE_PROFILE_COLUMN_HEIGHT,
+            IDLE_PROFILE_COLUMN_WEIGHT,
+            IDLE_PROFILE_COLUMN_BUST,
+            IDLE_PROFILE_COLUMN_WAIST,
+            IDLE_PROFILE_COLUMN_HIP,
+            IDLE_PROFILE_COLUMN_BIRTHDAY,
+            IDLE_PROFILE_COLUMN_COLSTELLATION,
+            IDLE_PROFILE_COLUMN_BLOODTYPE,
+            IDLE_PROFILE_COLUMN_HAND,
+            IDLE_PROFILE_COLUMN_HOME,
+            IDLE_PROFILE_COLUMN_HOBBY,
+            IDLE_PROFILE_COLUMN_IMAGE_HASH,
+    };
+    
+    
     //フィールド
     //----------------------------------------------------------------------------
     private SQLiteDatabase m_db = null;		//データベースオブジェクト
@@ -285,26 +323,26 @@ public class SqlDao {
         int id = cursor.getInt(0);
         PSDebug.d("id=" + id);
 
-        cardInfo.setAlbumId(cursor.getInt(1));
-        cardInfo.setAttribute(cursor.getString(2));
-        cardInfo.setRarity(cursor.getString(3));
-        cardInfo.setNamePrefix(cursor.getString(4));
-        cardInfo.setName(cursor.getString(5));
-        cardInfo.setNamePost(cursor.getString(6));
-        cardInfo.setCost(cursor.getInt(7));
-        cardInfo.setAttack(cursor.getInt(8));
-        cardInfo.setDefense(cursor.getInt(9));
-        cardInfo.setMaxAttack(cursor.getInt(10));
-        cardInfo.setMaxDefense(cursor.getInt(11));
-        cardInfo.setMaxConfirmed(cursor.getString(12));
-        cardInfo.setAttackCospa(cursor.getDouble(13));
-        cardInfo.setDefenseCospa(cursor.getDouble(14));
-        cardInfo.setSkillName(cursor.getString(15));
-        cardInfo.setTargetAttr(cursor.getString(16));
-        cardInfo.setAttdefType(cursor.getString(17));
-        cardInfo.setSkillEffect(cursor.getString(18));
-        cardInfo.setRemarks(cursor.getString(19));
-        cardInfo.setImageHash(cursor.getString(20));
+        cardInfo.setAlbumId(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_ALBUM_ID)));
+        cardInfo.setAttribute(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_ATTRIBUTE)));
+        cardInfo.setRarity(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_RARITY)));
+        cardInfo.setNamePrefix(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_NAME_PREFIX)));
+        cardInfo.setName(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_NAME)));
+        cardInfo.setNamePost(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_NAME_POST)));
+        cardInfo.setCost(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_COST)));
+        cardInfo.setAttack(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_ATTACK)));
+        cardInfo.setDefense(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_DEFENSE)));
+        cardInfo.setMaxAttack(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_MAX_ATTACK)));
+        cardInfo.setMaxDefense(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_MAX_DEFENSE)));
+        cardInfo.setMaxConfirmed(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_MAX_CONFIRMED)));
+        cardInfo.setAttackCospa(cursor.getDouble(cursor.getColumnIndex(IDLE_CARD_COLUMN_ATTACK_COSPA)));
+        cardInfo.setDefenseCospa(cursor.getDouble(cursor.getColumnIndex(IDLE_CARD_COLUMN_DEFENSE_COSPA)));
+        cardInfo.setSkillName(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_SKILL_NAME)));
+        cardInfo.setTargetAttr(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_TARGET_ATTR)));
+        cardInfo.setAttdefType(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_ATTDEF_TYPE)));
+        cardInfo.setSkillEffect(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_SKILL_EFFECT)));
+        cardInfo.setRemarks(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_REMAKS)));
+        cardInfo.setImageHash(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_IMAGE_HASH)));
 
         return cardInfo;
     }
@@ -323,6 +361,80 @@ public class SqlDao {
 
         return list;
     }
+
+    //アイドルプロフィール情報
+    //----------------------------------------------------------------------------
+    public long insertIdleProfileInfo(IdleProfileInfo info) {
+        return dbInsert(IDLE_PROFILE_TABLE_MAME, null, getNewIdleProfileInfoValues(info), RETRY_SQL_CALL);
+    }
+
+    public void deleteIdleProfileInfoAll() {
+        dbDelete(IDLE_PROFILE_TABLE_MAME, null, null, RETRY_SQL_CALL);
+    }
+
+    private ContentValues getNewIdleProfileInfoValues(IdleProfileInfo info) {
+        ContentValues values = new ContentValues();
+
+        values.put(IDLE_PROFILE_COLUMN_NAME, info.getName());
+        values.put(IDLE_PROFILE_COLUMN_KANA, info.getKana());
+        values.put(IDLE_PROFILE_COLUMN_AGO, info.getAgo());
+        values.put(IDLE_PROFILE_COLUMN_HEIGHT, info.getHeight());
+        values.put(IDLE_PROFILE_COLUMN_WEIGHT, info.getWeight());
+        values.put(IDLE_PROFILE_COLUMN_BUST, info.getBust());
+        values.put(IDLE_PROFILE_COLUMN_WAIST, info.getWaist());
+        values.put(IDLE_PROFILE_COLUMN_HIP, info.getHip());
+        values.put(IDLE_PROFILE_COLUMN_BIRTHDAY, info.getBirthday());
+        values.put(IDLE_PROFILE_COLUMN_COLSTELLATION, info.getConstellation());
+        values.put(IDLE_PROFILE_COLUMN_BLOODTYPE, info.getBloodType());
+        values.put(IDLE_PROFILE_COLUMN_HAND, info.getHand());
+        values.put(IDLE_PROFILE_COLUMN_HOME, info.getHome());
+        values.put(IDLE_PROFILE_COLUMN_HOBBY, info.getHobby());
+        values.put(IDLE_PROFILE_COLUMN_IMAGE_HASH, info.getImageHash());
+
+        return values;
+    }
+
+    private IdleProfileInfo createIdleProfileInfo(Cursor cursor) {
+        IdleProfileInfo info = new IdleProfileInfo();
+        int id = cursor.getInt(0);
+        PSDebug.d("id=" + id);
+
+        info.setName(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_NAME)));
+        info.setKana(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_KANA)));
+        info.setAgo(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_AGO)));
+        info.setHeight(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_HEIGHT)));
+        info.setWeight(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_WEIGHT)));
+        info.setBust(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_BUST)));
+        info.setWaist(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_WAIST)));
+        info.setHip(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_HIP)));
+        info.setBirthday(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_BIRTHDAY)));
+        info.setConstellation(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_COLSTELLATION)));
+        info.setBloodType(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_BLOODTYPE)));
+        info.setHand(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_HAND)));
+        info.setHome(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_HOME)));
+        info.setHobby(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_HOBBY)));
+        info.setImageHash(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_IMAGE_HASH)));
+
+        return info;
+    }
+
+    public List<IdleProfileInfo> selectIdleProfileInfoAll() {
+        return selectIdleProfileInfo(null, null, null);
+    }
+    public List<IdleProfileInfo> selectIdleProfileInfo(String select, String order, String limit) {
+        PSDebug.d("select=" + select);
+        PSDebug.d("order=" + order);
+        ArrayList<IdleProfileInfo> list = new ArrayList<IdleProfileInfo>();
+        Cursor cursor = m_db.query(IDLE_PROFILE_TABLE_MAME, IDLE_PROFILE_COLUMNS, select, null, null, null, order, limit);
+        while (cursor.moveToNext())
+        {
+            list.add(createIdleProfileInfo(cursor));
+        }
+        cursor.close();
+
+        return list;
+    }
+
 }
 
 

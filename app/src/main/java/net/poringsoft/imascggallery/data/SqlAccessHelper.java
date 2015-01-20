@@ -27,9 +27,9 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
             + ")";
 
     /**
-     * カード情報データ
+     * アイドルカード情報データ
      */
-    private static final String CREATE_SQL_IDLE_CARD_DATA = "create table idlecard"
+    private static final String CREATE_SQL_IDLE_CARD_DATA = "create table idlecardtbl"
             + "("
             + "rowid integer primary key autoincrement, "
             + "m_albumId integer,"
@@ -51,6 +51,29 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
             + "m_attdefType text,"
             + "m_skillEffect text,"
             + "m_remarks text,"
+            + "m_imageHash text"
+            + ")";
+
+    /**
+     * アイドルプロフィール情報
+     */
+    private static final String CREATE_SQL_IDLE_PROFILE_DATA = "create table idleprofiletbl"
+            + "("
+            + "rowid integer primary key autoincrement, "
+            + "m_name text,"
+            + "m_kana text,"
+            + "m_ago integer,"
+            + "m_height integer,"
+            + "m_weight integer,"
+            + "m_bust integer,"
+            + "m_waist integer,"
+            + "m_hip integer,"
+            + "m_birthday text,"
+            + "m_constellation text,"
+            + "m_bloodType text,"
+            + "m_hand text,"
+            + "m_home text,"
+            + "m_hobby text,"
             + "m_imageHash text"
             + ")";
 
@@ -90,6 +113,7 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
     {
         db.execSQL(CREATE_SQL_FAVORITE_DATA);
         db.execSQL(CREATE_SQL_IDLE_CARD_DATA);
+        db.execSQL(CREATE_SQL_IDLE_PROFILE_DATA);
     }
 
     /**
