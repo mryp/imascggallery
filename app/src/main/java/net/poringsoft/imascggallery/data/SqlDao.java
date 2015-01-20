@@ -417,10 +417,16 @@ public class SqlDao {
 
         return info;
     }
+    
+    public List<IdleProfileInfo> selectIdleProfileInfoSearchText(String text) {
+        String select = SqlSelectHelper.createSelectIldeProfile(text);
+        return selectIdleProfileInfo(select, null, null);
+    }
 
     public List<IdleProfileInfo> selectIdleProfileInfoAll() {
         return selectIdleProfileInfo(null, null, null);
     }
+    
     public List<IdleProfileInfo> selectIdleProfileInfo(String select, String order, String limit) {
         PSDebug.d("select=" + select);
         PSDebug.d("order=" + order);

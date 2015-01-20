@@ -222,7 +222,7 @@ public class SqlAccessManager {
         dao.beginTransaction();
         try
         {
-            infoList = dao.selectIdleProfileInfoAll();
+            infoList = dao.selectIdleProfileInfoSearchText(searchText);
             dao.setTransactionSuccessful();
         }
         finally

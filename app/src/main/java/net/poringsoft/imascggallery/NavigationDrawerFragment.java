@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.poringsoft.imascggallery.data.SqlSelectHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
 
 import java.util.ArrayList;
@@ -48,7 +49,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     private static final Map<String, String> DEF_MAP_GROUP = new LinkedHashMap<String, String>(){
         {
-            put("アニメ", "アニメ");
+            put("すべて", SqlSelectHelper.CMD_ALL + ":ALL");
+            put("アニメ", SqlSelectHelper.CMD_NAME_LIST + ":渋谷凛,島村卯月,本田未央,前川みく,諸星きらり,双葉杏,城ヶ崎莉嘉,緒方智絵里,多田李衣菜,赤城みりあ,新田美波,アナスタシア,神崎蘭子,三村かな子");
             put("キュート", "キュート");
             put("クール", "クール");
             put("パッション", "パッション");
@@ -226,7 +228,7 @@ public class NavigationDrawerFragment extends Fragment {
     {
         List<NaviSectionRowData> sectionList = new ArrayList<NaviSectionRowData>();
         for (Map.Entry<String, String> defdata : defList.entrySet()) {
-            sectionList.add(new NaviSectionRowData(defdata.getValue(), defdata.getKey()));
+            sectionList.add(new NaviSectionRowData(defdata.getKey(), defdata.getValue()));
         }
 
         return sectionList;
