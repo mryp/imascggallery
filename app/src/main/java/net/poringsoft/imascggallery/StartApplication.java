@@ -2,8 +2,11 @@ package net.poringsoft.imascggallery;
 
 import android.app.Application;
 
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import net.poringsoft.imascggallery.data.EnvPath;
@@ -22,7 +25,6 @@ public class StartApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         PSDebug.d("call");
 
         //デバッグ状態セット
@@ -31,15 +33,17 @@ public class StartApplication extends Application {
         //初期化
         EnvPath.init();
 
+        //画像ライブラリの初期化
         //https://github.com/nostra13/Android-Universal-Image-Loader
-        File cacheDir = StorageUtils.getCacheDirectory(getApplicationContext());
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .displayer(new FadeInBitmapDisplayer(200))
+                .build();
         ImageLoaderConfiguration  config = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                .threadPoolSize(3)  //非同期処理数
-                .memoryCacheSize(2 * 1024 * 1024)                   //メモリキャッシュの制限サイズ
-                .discCacheSize(50 * 1024 * 1024)                    //キャッシュファイルサイズ
-                //.memoryCache(new LruMemoryCache(2 * 1024 * 1024))   //メモリキャッシュ設定
-                //.discCache(new UnlimitedDiscCache(cacheDir))        //ディクスキャッシュ設定
-                //.discCacheFileCount(300)                            //キャッシュファイル数
+                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024)
+                .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
     }
