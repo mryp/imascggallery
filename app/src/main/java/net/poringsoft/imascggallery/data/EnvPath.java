@@ -20,6 +20,7 @@ public class EnvPath {
     private static final String NAME_ALBUM_CSV = "main.csv";        //アルバムデータファイル名
     private static final String NAME_PROFILE_CSV = "profile.csv";   //アイドルプロフィールファイル名
     private static final String NAME_HASH_JSON = "id2hash.json";    //ハッシュリストデータファイル名
+    private static final String NAME_UNIT_TEXT = "unit.txt";        //アイドルユニット一覧ファイル名
 
 
     //フィールド
@@ -105,6 +106,10 @@ public class EnvPath {
     public static String getHashFilePath()
     {
         return getRootDirPath() + NAME_HASH_JSON;
+    }
+    
+    public static String getUnitListFilePath() {
+        return getRootDirPath() + NAME_UNIT_TEXT;
     }
 
     /**

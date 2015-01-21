@@ -30,7 +30,7 @@ public class IdleInfoLoader {
         m_context = context;
     }
     
-    public boolean loadFile(String mainCsvPath, String profileCsvPath, String hashJsonPath) {
+    public boolean loadFile(String mainCsvPath, String profileCsvPath, String hashJsonPath, String unitListPath) {
         Map<Integer, String> hashTable = readImageHashList(hashJsonPath);
         if (hashTable == null || hashTable.size() == 0) {
             return false;
@@ -45,10 +45,16 @@ public class IdleInfoLoader {
         if (profileList == null || profileList.size() == 0) {
             return false;
         }
-        
+
         SqlAccessManager sqlManager = new SqlAccessManager(m_context);
         sqlManager.insertIdleCardInfoList(infoList);
         sqlManager.insertIdleProfileInfoList(profileList);
+
+        //ユニット一覧はオプション
+        ArrayList<IdleUnitInfo> unitList = readUnitList(unitListPath);
+        if (unitList != null && unitList.size() > 0) {
+            sqlManager.insertIdleUnitInfoList(unitList);
+        }
         return true;
     }
     
@@ -249,5 +255,51 @@ public class IdleInfoLoader {
         }
         
         return profileList;
+    }
+
+
+    private ArrayList<IdleUnitInfo> readUnitList(String filePath) {
+        ArrayList<IdleUnitInfo> infoList = new ArrayList<>();
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferReader = null;
+        try {
+            // CSVファイルの読み込み
+            inputStream = new FileInputStream(filePath);
+            inputStreamReader = new InputStreamReader(inputStream);
+            bufferReader = new BufferedReader(inputStreamReader);
+            String line = "";
+            while ((line = bufferReader.readLine()) != null) {
+                String[] items = line.split("=");
+                if (items.length < 2) {
+                    continue;
+                }
+                
+                IdleUnitInfo info = new IdleUnitInfo();
+                info.setUnitName(items[0]);
+                info.setCharName(items[1]);
+                infoList.add(info);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (inputStreamReader != null) {
+                    inputStreamReader.close();
+                }
+                if (bufferReader != null) {
+                    bufferReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return infoList;
     }
 }

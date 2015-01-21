@@ -23,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import net.poringsoft.imascggallery.data.IdleUnitInfo;
+import net.poringsoft.imascggallery.data.SqlAccessManager;
 import net.poringsoft.imascggallery.data.SqlSelectHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
 
@@ -41,15 +43,15 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
     public static final int FIRST_SELECT_POSITION = 1;
 
-    private static final Map<String, String> DEF_MAP_FAVORITE = new LinkedHashMap<String, String>(){
+    private static final Map<String, String> DEF_MAP_CATEGORY = new LinkedHashMap<String, String>(){
         {
             put("お気に入り", "お気に入り");
+            put("すべて", SqlSelectHelper.CMD_ALL + ":ALL");
         }
     };
 
-    private static final Map<String, String> DEF_MAP_GROUP = new LinkedHashMap<String, String>(){
+    private static final Map<String, String> DEF_MAP_UNIT = new LinkedHashMap<String, String>(){
         {
-            put("すべて", SqlSelectHelper.CMD_ALL + ":ALL");
             put("アニメ", SqlSelectHelper.CMD_NAME_LIST + ":渋谷凛,島村卯月,本田未央,前川みく,諸星きらり,双葉杏,城ヶ崎莉嘉,緒方智絵里,多田李衣菜,赤城みりあ,新田美波,アナスタシア,神崎蘭子,三村かな子");
             put("キュート", "キュート");
             put("クール", "クール");
@@ -207,14 +209,15 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private NavigationListAdapter createNavigationAdapter() {
         PSDebug.d("call");
+        SqlAccessManager sqlManager = new SqlAccessManager(getActivity());
         List<NaviSectionHeaderData> sectionList = new ArrayList<NaviSectionHeaderData>();
         List<List<NaviSectionRowData>> rowList = new ArrayList<List<NaviSectionRowData>>();
 
-        sectionList.add(new NaviSectionHeaderData("お気に入り"));
-        rowList.add(setNaviList(DEF_MAP_FAVORITE));
+        sectionList.add(new NaviSectionHeaderData("カテゴリ"));
+        rowList.add(setNaviList(DEF_MAP_CATEGORY));
 
-        sectionList.add(new NaviSectionHeaderData("グループ"));
-        rowList.add(setNaviList(DEF_MAP_GROUP));
+        sectionList.add(new NaviSectionHeaderData("ユニット"));
+        rowList.add(setNaviListUnitList(sqlManager));
 
         return new NavigationListAdapter(getActivity(), sectionList, rowList);
     }
@@ -233,6 +236,23 @@ public class NavigationDrawerFragment extends Fragment {
 
         return sectionList;
     }
+
+    private List<NaviSectionRowData> setNaviListUnitList(SqlAccessManager sqlManager)
+    {
+        List<NaviSectionRowData> sectionList = new ArrayList<NaviSectionRowData>();
+        List<IdleUnitInfo> unitList = sqlManager.selectIdleUnitInfo();
+        if (unitList == null || unitList.size() == 0) {
+            return sectionList; //空を返す
+        }
+
+        for (IdleUnitInfo unitInfo : unitList) {
+            sectionList.add(new NaviSectionRowData(unitInfo.getUnitName()
+                    , SqlSelectHelper.CMD_NAME_LIST + ":" + unitInfo.getCharName()));
+        }
+
+        return sectionList;
+    }
+
 
     /**
      * ドロワーがオープン状態かどうか

@@ -1,6 +1,7 @@
 package net.poringsoft.imascggallery;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  */
 public class MainListAdapter  extends BaseAdapter {
 
+    private Context m_context;
     private LayoutInflater m_layoutInf;
     private ArrayList<IdleProfileInfo> m_idleList;
     private boolean m_asyncImageClear = false;
@@ -33,6 +35,7 @@ public class MainListAdapter  extends BaseAdapter {
      * コンストラクタ
      */
     public MainListAdapter(Context context, ArrayList<IdleProfileInfo> cardList) {
+        m_context = context;
         m_idleList = cardList;
         m_layoutInf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         m_asyncImageClear = true;//EnvOption.getCardListAsyncImageDel(context);
@@ -95,13 +98,15 @@ public class MainListAdapter  extends BaseAdapter {
         }
         
         //名前部
+        Resources resources = m_context.getResources();
         TextView text = (TextView)view.findViewById(R.id.titleTextView);
         text.setText(getTitleText(info));
-        text.setTextColor(0xFF000000);
+        text.setTextColor(resources.getColor(R.color.main_text));
 
         //プロフィール部
         TextView subText = (TextView)view.findViewById(R.id.subTextView);
         subText.setText(getBodyText(info));
+        subText.setTextColor(resources.getColor(R.color.main_text_dark));
 
         return view;
     }

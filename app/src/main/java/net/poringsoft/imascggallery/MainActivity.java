@@ -275,7 +275,8 @@ public class MainActivity extends ActionBarActivity
 
     private void startUpdate() {
         IdleInfoLoader idleHelper = new IdleInfoLoader(this);
-        boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getProfileFilePath(), EnvPath.getHashFilePath());
+        boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getProfileFilePath()
+                , EnvPath.getHashFilePath(), EnvPath.getUnitListFilePath());
         if (ret == false) {
             PSUtils.toast(this, "読み込みに失敗しました。。。");
             return;

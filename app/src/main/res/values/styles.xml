@@ -1,8 +1,16 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <!-- Customize your theme here. -->
+        <!-- ActionBarのメイン背景色 -->
+        <item name="colorPrimary">@color/main_primary</item>
+
+        <!-- ステータスバーの背景色（Android5のみ） -->
+        <item name="colorPrimaryDark">@color/main_primary_dark</item>
+
+        <!-- ウィジェットテーマカラー -->
+        <item name="colorAccent">@color/main_accent</item>
     </style>
 
 </resources>

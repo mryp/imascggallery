@@ -77,6 +77,13 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
             + "m_imageHash text"
             + ")";
 
+    private static final String CREATE_SQL_IDLE_UNIT_DATA = "create table idleunittbl"
+            + "("
+            + "rowid integer primary key autoincrement, "
+            + "m_unitName text,"
+            + "m_charName text"
+            + ")";
+
     //メソッド
     //-------------------------------------------------------
     /**
@@ -114,6 +121,7 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SQL_FAVORITE_DATA);
         db.execSQL(CREATE_SQL_IDLE_CARD_DATA);
         db.execSQL(CREATE_SQL_IDLE_PROFILE_DATA);
+        db.execSQL(CREATE_SQL_IDLE_UNIT_DATA);
     }
 
     /**

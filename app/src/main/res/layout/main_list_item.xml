@@ -6,6 +6,7 @@
     <ImageView
         android:layout_width="@dimen/main_list_image_width"
         android:layout_height="@dimen/main_list_image_height"
+        android:layout_margin="4dp"
         android:id="@+id/cardImageView" />
     <LinearLayout
         android:orientation="vertical"

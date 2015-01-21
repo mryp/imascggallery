@@ -25,6 +25,7 @@ public class SqlDao {
 
     //テーブル定数
     //----------------------------------------------------------------------------
+    //カードテーブル
     public static final String IDLE_CARD_TABLE_MAME = "idlecardtbl";
     public static final String IDLE_CARD_COLUMN_ID = "rowid";
     public static final String IDLE_CARD_COLUMN_ALBUM_ID = "m_albumId";
@@ -71,7 +72,7 @@ public class SqlDao {
             IDLE_CARD_COLUMN_IMAGE_HASH,
     };
 
-
+    //プロフィールテーブル
     public static final String IDLE_PROFILE_TABLE_MAME = "idleprofiletbl";
     public static final String IDLE_PROFILE_COLUMN_ID = "rowid";
     public static final String IDLE_PROFILE_COLUMN_NAME = "m_name";
@@ -107,8 +108,19 @@ public class SqlDao {
             IDLE_PROFILE_COLUMN_HOBBY,
             IDLE_PROFILE_COLUMN_IMAGE_HASH,
     };
-    
-    
+
+    //ユニットテーブル
+    public static final String IDLE_UNIT_TABLE_MAME = "idleunittbl";
+    public static final String IDLE_UNIT_COLUMN_ID = "rowid";
+    public static final String IDLE_UNIT_COLUMN_UNIT_NAME = "m_unitName";
+    public static final String IDLE_UNIT_COLUMN_CHAR_NAME = "m_charName";
+    public static final String[] IDLE_UNIT_COLUMNS = {
+            IDLE_UNIT_COLUMN_ID,
+            IDLE_UNIT_COLUMN_UNIT_NAME,
+            IDLE_UNIT_COLUMN_CHAR_NAME,
+    };
+
+
     //フィールド
     //----------------------------------------------------------------------------
     private SQLiteDatabase m_db = null;		//データベースオブジェクト
@@ -441,6 +453,68 @@ public class SqlDao {
         return list;
     }
 
+    /*
+
+    public static final String IDLE_UNIT_TABLE_MAME = "idleunittbl";
+    public static final String IDLE_UNIT_COLUMN_ID = "rowid";
+    public static final String IDLE_UNIT_COLUMN_UNIT_NAME = "m_unitName";
+    public static final String IDLE_UNIT_COLUMN_CHAR_NAME = "m_charName";
+    public static final String[] IDLE_UNIT_COLUMNS = {
+            IDLE_UNIT_COLUMN_ID,
+            IDLE_UNIT_COLUMN_UNIT_NAME,
+            IDLE_UNIT_COLUMN_CHAR_NAME,
+    };
+
+     */
+
+
+    //アイドルユニット情報
+    //----------------------------------------------------------------------------
+    public long insertIdleUnitInfo(IdleUnitInfo info) {
+        return dbInsert(IDLE_UNIT_TABLE_MAME, null, getNewIdleUnitInfoValues(info), RETRY_SQL_CALL);
+    }
+
+    public void deleteIdleUnitInfoAll() {
+        dbDelete(IDLE_UNIT_TABLE_MAME, null, null, RETRY_SQL_CALL);
+    }
+
+    private ContentValues getNewIdleUnitInfoValues(IdleUnitInfo info) {
+        ContentValues values = new ContentValues();
+
+        values.put(IDLE_UNIT_COLUMN_UNIT_NAME, info.getUnitName());
+        values.put(IDLE_UNIT_COLUMN_CHAR_NAME, info.getCharName());
+        
+        return values;
+    }
+
+    private IdleUnitInfo createIdleUnitInfo(Cursor cursor) {
+        IdleUnitInfo info = new IdleUnitInfo();
+        int id = cursor.getInt(0);
+        PSDebug.d("id=" + id);
+
+        info.setUnitName(cursor.getString(cursor.getColumnIndex(IDLE_UNIT_COLUMN_UNIT_NAME)));
+        info.setCharName(cursor.getString(cursor.getColumnIndex(IDLE_UNIT_COLUMN_CHAR_NAME)));
+
+        return info;
+    }
+
+    public List<IdleUnitInfo> selectIdleUnitInfoAll() {
+        return selectIdleUnitInfo(null, null, null);
+    }
+
+    public List<IdleUnitInfo> selectIdleUnitInfo(String select, String order, String limit) {
+        PSDebug.d("select=" + select);
+        PSDebug.d("order=" + order);
+        ArrayList<IdleUnitInfo> list = new ArrayList<IdleUnitInfo>();
+        Cursor cursor = m_db.query(IDLE_UNIT_TABLE_MAME, IDLE_UNIT_COLUMNS, select, null, null, null, order, limit);
+        while (cursor.moveToNext())
+        {
+            list.add(createIdleUnitInfo(cursor));
+        }
+        cursor.close();
+
+        return list;
+    }
 }
 
 

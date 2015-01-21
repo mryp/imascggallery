@@ -42,6 +42,7 @@ public class NavigationListAdapter extends BaseSectionAdapter<NaviSectionHeaderD
     public View viewForHeaderInSection(View convertView, int section)
     {
         ListHeaderViewHolder holder = null;
+        Resources resources = context.getResources();
         if (convertView == null)
         {
             convertView = inflater.inflate(R.layout.main_navi_header, null);
@@ -51,7 +52,7 @@ public class NavigationListAdapter extends BaseSectionAdapter<NaviSectionHeaderD
                 convertView.setTag(holder);
 
                 RelativeLayout layout = (RelativeLayout)convertView.findViewById(R.id.titleLayout);
-                layout.setBackgroundColor(0xFFFFFFFF);
+                layout.setBackgroundColor(resources.getColor(R.color.main_background));
             }
         }
         else
@@ -62,6 +63,7 @@ public class NavigationListAdapter extends BaseSectionAdapter<NaviSectionHeaderD
         if (holder != null) {
             NaviSectionHeaderData headerData = sectionList.get(section);
             holder.titleTxt.setText(headerData.getTitle());
+            holder.titleTxt.setTextColor(resources.getColor(R.color.main_primary_dark));
         }
         return convertView;
     }
@@ -106,8 +108,8 @@ public class NavigationListAdapter extends BaseSectionAdapter<NaviSectionHeaderD
             } else {
                 //通常時の背景色
                 convertView.setBackgroundResource(R.drawable.navi_selector);
-                holder.labelTxt.setTextColor(resources.getColor(R.color.main_text));
-                holder.valueTxt.setTextColor(resources.getColor(R.color.main_text));
+                holder.labelTxt.setTextColor(resources.getColor(R.color.main_text_dark));
+                holder.valueTxt.setTextColor(resources.getColor(R.color.main_text_dark));
             }
         }
         return convertView;

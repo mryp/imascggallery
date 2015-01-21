@@ -233,4 +233,59 @@ public class SqlAccessManager {
 
         return infoList;
     }
+
+    //アイドルプロフィール関連
+    //---------------------------------------------
+    public void insertIdleUnitInfoList(List<IdleUnitInfo> infoList)
+    {
+        SqlDao dao = open(OPEN_MODE_READWRITE);
+        if (dao == null)
+        {
+            return;
+        }
+
+        dao.beginTransaction();
+        try
+        {
+            //一旦全削除
+            dao.deleteIdleUnitInfoAll();
+
+            //すべて追加
+            for (IdleUnitInfo info : infoList)
+            {
+                dao.insertIdleUnitInfo(info);
+            }
+
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+    }
+
+    public List<IdleUnitInfo> selectIdleUnitInfo()
+    {
+        SqlDao dao = open(OPEN_MODE_READONLY);
+        if (dao == null)
+        {
+            return new ArrayList<IdleUnitInfo>();
+        }
+
+        List<IdleUnitInfo> infoList;
+        dao.beginTransaction();
+        try
+        {
+            infoList = dao.selectIdleUnitInfoAll();
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+
+        return infoList;
+    }
 }
