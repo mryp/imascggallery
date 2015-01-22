@@ -252,6 +252,10 @@ public class MainActivity extends ActionBarActivity
             case R.id.action_update:
                 startUpdate();
                 return true;
+            case R.id.action_search:
+                //TODO: アイドル検索機能は未実装
+                PSUtils.toast(this, "未実装");
+                return true;
             case R.id.action_sort:
                 //サブメニューを使用するため何もしない
                 return true;

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">iDLEM@STER ALBUM</string>
+    <string name="app_name">シンデレラギャラリー</string>
     
     <string name="action_settings">設定</string>
     <string name="action_update">更新</string>
+    <string name="action_search">検索</string>
     <string name="action_sort">並び替え</string>
     <string name="action_sort_rowid">登録順</string>
     <string name="action_sort_name">名前順</string>

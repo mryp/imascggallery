@@ -13,21 +13,21 @@ public class SqlSelectHelper {
     public static final String CMD_NAME_LIST = "NAMELIST";  //名前列挙
 
     //並び替え種別
-    public static final int SELECT_MAIN_SORT_ROWID_ASC = 1;         //型番順
-    public static final int SELECT_MAIN_SORT_NAME_ASC = 2;          //名前順
-    public static final int SELECT_MAIN_SORT_KANA_ASC = 3;          //名前順
-    public static final int SELECT_MAIN_SORT_AGE_ASC = 4;           //名前順
-    public static final int SELECT_MAIN_SORT_AGE_DESC = 5;          //名前順
-    public static final int SELECT_MAIN_SORT_HEIGHT_ASC = 6;        //名前順
-    public static final int SELECT_MAIN_SORT_HEIGHT_DESC = 7;       //名前順
-    public static final int SELECT_MAIN_SORT_WEIGHT_ASC = 8;        //名前順
-    public static final int SELECT_MAIN_SORT_WEIGHT_DESC = 9;       //名前順
-    public static final int SELECT_MAIN_SORT_BUST_ASC = 10;         //名前順
-    public static final int SELECT_MAIN_SORT_BUST_DESC = 11;        //名前順
-    public static final int SELECT_MAIN_SORT_WAIST_ASC = 12;        //名前順
-    public static final int SELECT_MAIN_SORT_WAIST_DESC = 13;       //名前順
-    public static final int SELECT_MAIN_SORT_HIP_ASC = 14;          //名前順
-    public static final int SELECT_MAIN_SORT_HIP_DESC = 15;         //名前順
+    public static final int SELECT_MAIN_SORT_ROWID_ASC = 1;
+    public static final int SELECT_MAIN_SORT_NAME_ASC = 2;
+    public static final int SELECT_MAIN_SORT_KANA_ASC = 3;
+    public static final int SELECT_MAIN_SORT_AGE_ASC = 4;
+    public static final int SELECT_MAIN_SORT_AGE_DESC = 5;
+    public static final int SELECT_MAIN_SORT_HEIGHT_ASC = 6;
+    public static final int SELECT_MAIN_SORT_HEIGHT_DESC = 7;
+    public static final int SELECT_MAIN_SORT_WEIGHT_ASC = 8;
+    public static final int SELECT_MAIN_SORT_WEIGHT_DESC = 9;
+    public static final int SELECT_MAIN_SORT_BUST_ASC = 10;
+    public static final int SELECT_MAIN_SORT_BUST_DESC = 11;
+    public static final int SELECT_MAIN_SORT_WAIST_ASC = 12;
+    public static final int SELECT_MAIN_SORT_WAIST_DESC = 13;
+    public static final int SELECT_MAIN_SORT_HIP_ASC = 14;
+    public static final int SELECT_MAIN_SORT_HIP_DESC = 15;
 
     
     public static String createSelectIldeProfile(String searchText){

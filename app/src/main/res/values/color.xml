@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- カラーパレット：http://www.google.com/design/spec/style/color.html#color-color-palette -->
     <color name="main_primary">#009688</color>
     <color name="main_primary_dark">#00796B</color>
     <color name="main_accent">#FF4081</color>
     <color name="main_background">#263238</color>
-    <color name="main_select_background">#80CBC4</color>
+    <color name="main_select_background">#37474F</color>
     <color name="main_text">#E0F2F1</color>
-    <color name="main_select_text">#004D40</color>
+    <color name="main_select_text">#B0BEC5</color>
     <color name="main_text_dark">#B0BEC5</color>
 
     <color name="ability_text_regular">#FF0000</color>
