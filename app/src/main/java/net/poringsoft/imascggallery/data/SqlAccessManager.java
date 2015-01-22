@@ -222,7 +222,8 @@ public class SqlAccessManager {
         dao.beginTransaction();
         try
         {
-            infoList = dao.selectIdleProfileInfoSearchText(searchText);
+            int sortType = EnvOption.getMainListSortType(m_context);
+            infoList = dao.selectIdleProfileInfoSearchText(searchText, sortType);
             dao.setTransactionSuccessful();
         }
         finally

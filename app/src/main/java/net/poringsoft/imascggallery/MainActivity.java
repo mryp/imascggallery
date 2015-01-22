@@ -23,8 +23,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleInfoLoader;
+import net.poringsoft.imascggallery.data.SqlSelectHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
 import net.poringsoft.imascggallery.utils.PSUtils;
 
@@ -250,6 +252,54 @@ public class MainActivity extends ActionBarActivity
             case R.id.action_update:
                 startUpdate();
                 return true;
+            case R.id.action_sort:
+                //サブメニューを使用するため何もしない
+                return true;
+            case R.id.action_sort_rowid:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_ROWID_ASC);
+                return true;
+            case R.id.action_sort_name:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_NAME_ASC);
+                return true;
+            case R.id.action_sort_kana:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_KANA_ASC);
+                return true;
+            case R.id.action_sort_age_asc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_AGE_ASC);
+                return true;
+            case R.id.action_sort_age_desc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_AGE_DESC);
+                return true;
+            case R.id.action_sort_height_asc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_HEIGHT_ASC);
+                return true;
+            case R.id.action_sort_height_desc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_HEIGHT_DESC);
+                return true;
+            case R.id.action_sort_weight_asc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_WEIGHT_ASC);
+                return true;
+            case R.id.action_sort_weight_desc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_WEIGHT_DESC);
+                return true;
+            case R.id.action_sort_bust_asc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_BUST_ASC);
+                return true;
+            case R.id.action_sort_bust_desc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_BUST_DESC);
+                return true;
+            case R.id.action_sort_waist_asc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_WAIST_ASC);
+                return true;
+            case R.id.action_sort_waist_desc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_WAIST_DESC);
+                return true;
+            case R.id.action_sort_hip_asc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_HIP_ASC);
+                return true;
+            case R.id.action_sort_hip_desc:
+                setSortType(SqlSelectHelper.SELECT_MAIN_SORT_HIP_DESC);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -281,10 +331,10 @@ public class MainActivity extends ActionBarActivity
             PSUtils.toast(this, "読み込みに失敗しました。。。");
             return;
         }
-        
+
         PSUtils.toast(this, "更新に成功しました");
     }
-    
+
     /**
      * 画面戻りイベント
      * @param requestCode 呼び出し元（この画面で指定）コード
@@ -299,4 +349,13 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    /**
+     * 並び替え開始
+     * @param sortType ソートタイプ（SqlSelectHelper.SELECT_MAIN_SORT_～）
+     */
+    private void setSortType(int sortType)
+    {
+        EnvOption.putMainListSortType(this, sortType);
+        startFragment(m_title.toString(), m_searchText, true);
+    }
 }

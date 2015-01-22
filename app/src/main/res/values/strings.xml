@@ -4,4 +4,20 @@
     
     <string name="action_settings">設定</string>
     <string name="action_update">更新</string>
+    <string name="action_sort">並び替え</string>
+    <string name="action_sort_rowid">登録順</string>
+    <string name="action_sort_name">名前順</string>
+    <string name="action_sort_kana">よみがな順</string>
+    <string name="action_sort_age_asc">年齢（昇順）</string>
+    <string name="action_sort_age_desc">年齢（降順）</string>
+    <string name="action_sort_height_asc">身長（昇順）</string>
+    <string name="action_sort_height_desc">身長（降順）</string>
+    <string name="action_sort_weight_asc">体重（昇順）</string>
+    <string name="action_sort_weight_desc">体重（降順）</string>
+    <string name="action_sort_bust_asc">バスト（昇順）</string>
+    <string name="action_sort_bust_desc">バスト（降順）</string>
+    <string name="action_sort_waist_asc">ウエスト（昇順）</string>
+    <string name="action_sort_waist_desc">ウエスト（降順）</string>
+    <string name="action_sort_hip_asc">ヒップ（昇順）</string>
+    <string name="action_sort_hip_desc">ヒップ（降順）</string>
 </resources>

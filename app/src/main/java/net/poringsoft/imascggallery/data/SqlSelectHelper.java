@@ -12,6 +12,24 @@ public class SqlSelectHelper {
     public static final String CMD_ALL = "ALL";  //すべて表示
     public static final String CMD_NAME_LIST = "NAMELIST";  //名前列挙
 
+    //並び替え種別
+    public static final int SELECT_MAIN_SORT_ROWID_ASC = 1;         //型番順
+    public static final int SELECT_MAIN_SORT_NAME_ASC = 2;          //名前順
+    public static final int SELECT_MAIN_SORT_KANA_ASC = 3;          //名前順
+    public static final int SELECT_MAIN_SORT_AGE_ASC = 4;           //名前順
+    public static final int SELECT_MAIN_SORT_AGE_DESC = 5;          //名前順
+    public static final int SELECT_MAIN_SORT_HEIGHT_ASC = 6;        //名前順
+    public static final int SELECT_MAIN_SORT_HEIGHT_DESC = 7;       //名前順
+    public static final int SELECT_MAIN_SORT_WEIGHT_ASC = 8;        //名前順
+    public static final int SELECT_MAIN_SORT_WEIGHT_DESC = 9;       //名前順
+    public static final int SELECT_MAIN_SORT_BUST_ASC = 10;         //名前順
+    public static final int SELECT_MAIN_SORT_BUST_DESC = 11;        //名前順
+    public static final int SELECT_MAIN_SORT_WAIST_ASC = 12;        //名前順
+    public static final int SELECT_MAIN_SORT_WAIST_DESC = 13;       //名前順
+    public static final int SELECT_MAIN_SORT_HIP_ASC = 14;          //名前順
+    public static final int SELECT_MAIN_SORT_HIP_DESC = 15;         //名前順
+
+    
     public static String createSelectIldeProfile(String searchText){
         String[] command = searchText.split(":");
         if (command.length < 2)
@@ -66,4 +84,59 @@ public class SqlSelectHelper {
         return select.toString();
     }
 
+    public static String createOrderIdleProfile(int sortType) {
+        String order = "";
+        switch (sortType) {
+            case SELECT_MAIN_SORT_ROWID_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_ID + " ASC";
+                break;
+            case SELECT_MAIN_SORT_NAME_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_NAME + " ASC";
+                break;
+            case SELECT_MAIN_SORT_KANA_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_KANA + " ASC";
+                break;
+            case SELECT_MAIN_SORT_AGE_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_AGO + " ASC";
+                break;
+            case SELECT_MAIN_SORT_AGE_DESC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_AGO + " DESC";
+                break;
+            case SELECT_MAIN_SORT_HEIGHT_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_HEIGHT + " ASC";
+                break;
+            case SELECT_MAIN_SORT_HEIGHT_DESC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_HEIGHT + " DESC";
+                break;
+            case SELECT_MAIN_SORT_WEIGHT_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_WEIGHT + " ASC";
+                break;
+            case SELECT_MAIN_SORT_WEIGHT_DESC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_WEIGHT + " DESC";
+                break;
+            case SELECT_MAIN_SORT_BUST_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_BUST + " ASC";
+                break;
+            case SELECT_MAIN_SORT_BUST_DESC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_BUST + " DESC";
+                break;
+            case SELECT_MAIN_SORT_WAIST_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_WAIST + " ASC";
+                break;
+            case SELECT_MAIN_SORT_WAIST_DESC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_WAIST + " DESC";
+                break;
+            case SELECT_MAIN_SORT_HIP_ASC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_HIP + " ASC";
+                break;
+            case SELECT_MAIN_SORT_HIP_DESC:
+                order = SqlDao.IDLE_PROFILE_COLUMN_HIP + " DESC";
+                break;
+            default:
+                order = SqlDao.IDLE_PROFILE_COLUMN_ID + " ASC";
+                break;
+        }
+
+        return order;
+    }
 }

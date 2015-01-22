@@ -430,9 +430,10 @@ public class SqlDao {
         return info;
     }
     
-    public List<IdleProfileInfo> selectIdleProfileInfoSearchText(String text) {
+    public List<IdleProfileInfo> selectIdleProfileInfoSearchText(String text, int sortType) {
         String select = SqlSelectHelper.createSelectIldeProfile(text);
-        return selectIdleProfileInfo(select, null, null);
+        String order = SqlSelectHelper.createOrderIdleProfile(sortType);
+        return selectIdleProfileInfo(select, order, null);
     }
 
     public List<IdleProfileInfo> selectIdleProfileInfoAll() {
@@ -452,20 +453,6 @@ public class SqlDao {
 
         return list;
     }
-
-    /*
-
-    public static final String IDLE_UNIT_TABLE_MAME = "idleunittbl";
-    public static final String IDLE_UNIT_COLUMN_ID = "rowid";
-    public static final String IDLE_UNIT_COLUMN_UNIT_NAME = "m_unitName";
-    public static final String IDLE_UNIT_COLUMN_CHAR_NAME = "m_charName";
-    public static final String[] IDLE_UNIT_COLUMNS = {
-            IDLE_UNIT_COLUMN_ID,
-            IDLE_UNIT_COLUMN_UNIT_NAME,
-            IDLE_UNIT_COLUMN_CHAR_NAME,
-    };
-
-     */
 
 
     //アイドルユニット情報

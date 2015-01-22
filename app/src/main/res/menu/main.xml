@@ -3,4 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings" />
     <item android:id="@+id/action_update" android:title="@string/action_update" />
+    <item android:id="@+id/action_search" android:title="@string/action_update" />
+    <item android:id="@+id/action_sort"
+        android:title="@string/action_sort"
+        app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/action_sort_rowid"
+                android:title="@string/action_sort_rowid"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_name"
+                android:title="@string/action_sort_name"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_kana"
+                android:title="@string/action_sort_kana"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_age_asc"
+                android:title="@string/action_sort_age_asc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_age_desc"
+                android:title="@string/action_sort_age_desc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_height_asc"
+                android:title="@string/action_sort_height_asc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_height_desc"
+                android:title="@string/action_sort_height_desc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_weight_asc"
+                android:title="@string/action_sort_weight_asc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_weight_desc"
+                android:title="@string/action_sort_weight_desc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_bust_asc"
+                android:title="@string/action_sort_bust_asc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_bust_desc"
+                android:title="@string/action_sort_bust_desc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_waist_asc"
+                android:title="@string/action_sort_waist_asc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_waist_desc"
+                android:title="@string/action_sort_waist_desc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_hip_asc"
+                android:title="@string/action_sort_hip_asc"
+                app:showAsAction="never" />
+            <item android:id="@+id/action_sort_hip_desc"
+                android:title="@string/action_sort_hip_desc"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

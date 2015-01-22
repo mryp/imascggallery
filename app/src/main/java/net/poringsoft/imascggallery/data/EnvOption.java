@@ -15,6 +15,9 @@ public class EnvOption {
     //通信関連
     public static final String NET_GET_AGENT = "Mozilla/5.0 (Linux; Android; ja-jp;)";
     public static final int NET_GET_TIMEOUT = 10000;
+    
+    //設定値
+    public static final String KEY_MAIN_LIST_SORT_TYPE = " main_list_sort_type";     //メインリストのソート方法
 
     //共通メソッド
     //---------------------------------------------------------
@@ -94,5 +97,15 @@ public class EnvOption {
         boolean result = pref.getBoolean(key, def);
         PSDebug.d("key=" + key + " value=" + result + " def=" + def);
         return result;
+    }
+    
+    //メイン画面関連
+    //-------------------------------------------
+    public static void putMainListSortType(Context context, int sortType) {
+        putInt(context, KEY_MAIN_LIST_SORT_TYPE, sortType);
+    }
+
+    public static int getMainListSortType(Context context) {
+        return getInt(context, KEY_MAIN_LIST_SORT_TYPE, SqlSelectHelper.SELECT_MAIN_SORT_ROWID_ASC);
     }
 }
