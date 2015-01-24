@@ -43,19 +43,13 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
     public static final int FIRST_SELECT_POSITION = 1;
 
+    /**
+     * 必ず表示するカテゴリーテーブル
+     */
     private static final Map<String, String> DEF_MAP_CATEGORY = new LinkedHashMap<String, String>(){
         {
             put("お気に入り", "お気に入り");
             put("すべて", SqlSelectHelper.CMD_ALL + ":ALL");
-        }
-    };
-
-    private static final Map<String, String> DEF_MAP_UNIT = new LinkedHashMap<String, String>(){
-        {
-            put("アニメ", SqlSelectHelper.CMD_NAME_LIST + ":渋谷凛,島村卯月,本田未央,前川みく,諸星きらり,双葉杏,城ヶ崎莉嘉,緒方智絵里,多田李衣菜,赤城みりあ,新田美波,アナスタシア,神崎蘭子,三村かな子");
-            put("キュート", "キュート");
-            put("クール", "クール");
-            put("パッション", "パッション");
         }
     };
     
@@ -161,13 +155,13 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     /**
-     * カード詳細一覧画面からカード情報をダウンロードする
+     * ナビゲーションメニューリストを作成する
      */
     public class ReadNaviListAsyncTask extends AsyncTask<String, String, NavigationListAdapter> {
         /**
          * 実処理
-         * @param text
-         * @return
+         * @param text 未使用
+         * @return ナビゲーション表示汁と
          */
         @Override
         protected NavigationListAdapter doInBackground(String... text) {
@@ -237,6 +231,11 @@ public class NavigationDrawerFragment extends Fragment {
         return sectionList;
     }
 
+    /**
+     * ユニット一覧リストを生成する
+     * @param sqlManager DBマネージャー
+     * @return ナビゲーションリスト
+     */
     private List<NaviSectionRowData> setNaviListUnitList(SqlAccessManager sqlManager)
     {
         List<NaviSectionRowData> sectionList = new ArrayList<NaviSectionRowData>();

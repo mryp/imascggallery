@@ -17,7 +17,7 @@ public class EnvOption {
     public static final int NET_GET_TIMEOUT = 10000;
     
     //設定値
-    public static final String KEY_MAIN_LIST_SORT_TYPE = " main_list_sort_type";     //メインリストのソート方法
+    public static final String KEY_MAIN_LIST_SORT_TYPE = " main_list_sort_type";     //メインリストの並び替え値
 
     //共通メソッド
     //---------------------------------------------------------
@@ -30,7 +30,7 @@ public class EnvOption {
     private static void putString(Context context, String key, String value) {
         PSDebug.d("key=" + key + " value=" + value);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putString(key, value).commit();
+        pref.edit().putString(key, value).apply();
     }
 
     /**
@@ -56,7 +56,7 @@ public class EnvOption {
     private static void putInt(Context context, String key, int value) {
         PSDebug.d("key=" + key + " value=" + value);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putInt(key, value).commit();
+        pref.edit().putInt(key, value).apply();
     }
 
     /**
@@ -82,7 +82,7 @@ public class EnvOption {
     private static void putBoolean(Context context, String key, boolean value) {
         PSDebug.d("key=" + key + " value=" + value);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().putBoolean(key, value).commit();
+        pref.edit().putBoolean(key, value).apply();
     }
 
     /**
@@ -101,10 +101,20 @@ public class EnvOption {
     
     //メイン画面関連
     //-------------------------------------------
+    /**
+     * メイン画面の並び替え値を保存
+     * @param context コンテキスト
+     * @param sortType 並び替え値（SqlSelectHelper.SELECT_MAIN_SORT_）
+     */
     public static void putMainListSortType(Context context, int sortType) {
         putInt(context, KEY_MAIN_LIST_SORT_TYPE, sortType);
     }
 
+    /**
+     * メイン画面の並び替え値を取得
+     * @param context コンテキスト
+     * @return 並び替え値（SqlSelectHelper.SELECT_MAIN_SORT_）
+     */
     public static int getMainListSortType(Context context) {
         return getInt(context, KEY_MAIN_LIST_SORT_TYPE, SqlSelectHelper.SELECT_MAIN_SORT_ROWID_ASC);
     }

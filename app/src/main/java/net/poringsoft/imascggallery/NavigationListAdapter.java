@@ -115,6 +115,9 @@ public class NavigationListAdapter extends BaseSectionAdapter<NaviSectionHeaderD
         return convertView;
     }
 
+    /**
+     * ラベルクラス
+     */
     private class LabelItem
     {
         private TextView m_labelTextView;

@@ -5,9 +5,12 @@ import android.database.DatabaseUtils;
 import net.poringsoft.imascggallery.utils.KanamojiCharUtils;
 
 /**
+ * SQL検索・並び替え用文字列生成ヘルパークラス 
  * Created by mry on 15/01/20.
  */
 public class SqlSelectHelper {
+    //定数
+    //---------------------------------------------------
     //検索コマンド
     public static final String CMD_ALL = "ALL";  //すべて表示
     public static final String CMD_NAME_LIST = "NAMELIST";  //名前列挙
@@ -29,12 +32,18 @@ public class SqlSelectHelper {
     public static final int SELECT_MAIN_SORT_HIP_ASC = 14;
     public static final int SELECT_MAIN_SORT_HIP_DESC = 15;
 
-    
+    //メソッド
+    //---------------------------------------------------
+    /**
+     * アイドルプロフィール情報を検索する文字列を生成する
+     * @param searchText 検索文字列（コマンドはSELECT_MAIN_SORT_〜を使用する）
+     * @return DB検索用文字列
+     */
     public static String createSelectIldeProfile(String searchText){
         String[] command = searchText.split(":");
         if (command.length < 2)
         {
-            return createNameSelect(searchText);
+            return createIdleProfileNameSelect(searchText);
         }
 
         String key = command[0];
@@ -65,27 +74,34 @@ public class SqlSelectHelper {
         return select;
     }
 
-    private static String createNameSelect(String searchText) {
+    /**
+     * アイドルプロフィールの名前検索条件を作成する
+     * @param searchText 検索文字列
+     * @return DB検索文字列
+     */
+    private static String createIdleProfileNameSelect(String searchText) {
         String kanaSearchText = KanamojiCharUtils.zenkakuHiraganaToZenkakuKatakana(searchText);
 
         //部分一致検索
         String nameQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
         String kanaQuery = DatabaseUtils.sqlEscapeString("%"+kanaSearchText+"%");
 
-        StringBuilder select = new StringBuilder();
-        select.append(SqlDao.IDLE_PROFILE_COLUMN_NAME);
-        select.append(" LIKE ");
-        select.append(nameQuery);
-        select.append(" OR ");
-        select.append(SqlDao.IDLE_PROFILE_COLUMN_KANA);
-        select.append(" LIKE ");
-        select.append(kanaQuery);
-
-        return select.toString();
+        return SqlDao.IDLE_PROFILE_COLUMN_NAME
+                + " LIKE "
+                + nameQuery
+                + " OR "
+                + SqlDao.IDLE_PROFILE_COLUMN_KANA
+                + " LIKE "
+                + kanaQuery;
     }
 
+    /**
+     * アイドルプロフィール情報並び替え条件を作成する
+     * @param sortType 並び替え値（SELECT_MAIN_SORT_〜）
+     * @return 並び替え条件文字列
+     */
     public static String createOrderIdleProfile(int sortType) {
-        String order = "";
+        String order;
         switch (sortType) {
             case SELECT_MAIN_SORT_ROWID_ASC:
                 order = SqlDao.IDLE_PROFILE_COLUMN_ID + " ASC";

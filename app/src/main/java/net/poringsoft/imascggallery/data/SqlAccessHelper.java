@@ -77,6 +77,9 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
             + "m_imageHash text"
             + ")";
 
+    /**
+     * ユニット情報
+     */
     private static final String CREATE_SQL_IDLE_UNIT_DATA = "create table idleunittbl"
             + "("
             + "rowid integer primary key autoincrement, "

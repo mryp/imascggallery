@@ -9,7 +9,6 @@ import java.net.URL;
 
 /**
  * 環境パス関連クラス
- *
  */
 public class EnvPath {
     //定数
@@ -93,21 +92,37 @@ public class EnvPath {
 
         return dirPath;
     }
-    
+
+    /**
+     * カード情報ファイルパスを取得する 
+     * @return ファイルパス
+     */
     public static String getAlbumFilePath()
     {
         return getRootDirPath() + NAME_ALBUM_CSV;
     }
-    
+
+    /**
+     * プロイール情報ファイルパスを取得する 
+     * @return ファイルパス
+     */
     public static String getProfileFilePath() {
         return getRootDirPath() + NAME_PROFILE_CSV;
     }
-    
+
+    /**
+     * カードハッシュ値ファイルパスを取得する 
+     * @return ファイルパス
+     */
     public static String getHashFilePath()
     {
         return getRootDirPath() + NAME_HASH_JSON;
     }
-    
+
+    /**
+     * ユニット一覧ファイルパスを取得する
+     * @return ファイルパス
+     */
     public static String getUnitListFilePath() {
         return getRootDirPath() + NAME_UNIT_TEXT;
     }

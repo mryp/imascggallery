@@ -59,10 +59,16 @@ public class MainListFragment extends ListFragment {
         return fragment;
     }
 
+    /**
+     * タイトル文字列
+     */
     public String getArgTitle() {
         return m_title;
     }
 
+    /**
+     * 検索文字列
+     */
     public String getArgSearchText() {
         return m_searchText;
     }

@@ -7,15 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.poringsoft.imascggallery.data.EnvPath;
-import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.IdleProfileInfo;
-import net.poringsoft.imascggallery.utils.PSDebug;
 
 import java.util.ArrayList;
 
@@ -28,7 +25,6 @@ public class MainListAdapter  extends BaseAdapter {
     private Context m_context;
     private LayoutInflater m_layoutInf;
     private ArrayList<IdleProfileInfo> m_idleList;
-    private boolean m_asyncImageClear = false;
     private boolean m_showBirthday = false;
 
     /**
@@ -38,7 +34,6 @@ public class MainListAdapter  extends BaseAdapter {
         m_context = context;
         m_idleList = cardList;
         m_layoutInf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        m_asyncImageClear = true;//EnvOption.getCardListAsyncImageDel(context);
         m_showBirthday = false;
     }
 
@@ -90,9 +85,7 @@ public class MainListAdapter  extends BaseAdapter {
 
         //カード画像
         ImageView cardImage = (ImageView)view.findViewById(R.id.cardImageView);
-        if (m_asyncImageClear) {
-            cardImage.setImageBitmap(null);
-        }
+        cardImage.setImageBitmap(null);
         if (!info.getImageHash().equals("")) {
             ImageLoader.getInstance().displayImage(EnvPath.getIdleIconImageUrl(info.getImageHash()), cardImage);
         }
@@ -134,18 +127,24 @@ public class MainListAdapter  extends BaseAdapter {
             birthdayText = "\n誕生日：" + info.getBirthday() + " (" + info.getConstellation() + ")";
         }
         
-        return getIntegerText(info.getAgo()) + "歳 " 
+        return getIntegerText(info.getAge()) + "歳 "
                 + getIntegerText(info.getHeight()) + "cm " 
                 + getIntegerText(info.getWeight()) + "kg "
                 + "B" + getIntegerText(info.getBust()) + "/W" + getIntegerText(info.getWaist()) + "/H" + getIntegerText(info.getHip())
                 + birthdayText;
     }
-    
+
+    /**
+     * 整数値から文字列を返す 
+     * @param value 整数値
+     * @return 文字列
+     */
     private String getIntegerText(int value)
     {
         String text = String.valueOf(value);
         if (value == 0)
         {
+            //不明な値のとき
             text = "？";
         }
         

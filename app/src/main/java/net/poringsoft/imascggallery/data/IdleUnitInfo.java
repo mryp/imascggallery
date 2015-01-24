@@ -11,9 +11,10 @@ public class IdleUnitInfo {
     private String m_unitName;
     private String m_charName;
 
+    //プロパティ
+    //---------------------------------------------------
     /**
      * ユニット名 
-     * @return
      */
     public String getUnitName() {
         return m_unitName;
@@ -21,7 +22,6 @@ public class IdleUnitInfo {
 
     /**
      * ユニット名を設定する 
-     * @param unitName
      */
     public void setUnitName(String unitName) {
         m_unitName = unitName;
@@ -29,7 +29,6 @@ public class IdleUnitInfo {
 
     /**
      * ユニットに所属するキャラクター名（複数の時はカンマ区切り） 
-     * @return
      */
     public String getCharName() {
         return m_charName;
@@ -37,7 +36,6 @@ public class IdleUnitInfo {
 
     /**
      * ユニットに所属するキャラクター名（複数の時はカンマ区切り）
-     * @param charName
      */
     public void setCharName(String charName) {
         m_charName = charName;
@@ -45,6 +43,9 @@ public class IdleUnitInfo {
     
     //メソッド
     //---------------------------------------
+    /**
+     * コンストラクタ
+     */
     public IdleUnitInfo() {
     }
 }

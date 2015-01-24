@@ -1,7 +1,7 @@
 package net.poringsoft.imascggallery.data;
 
 /**
- * アイドル情報・プロフィール保持クラス
+ * アイドルカード情報クラス
  * Created by mry on 15/01/18.
  */
 public class IdleCardInfo {
@@ -33,7 +33,6 @@ public class IdleCardInfo {
     //---------------------------------------------------
     /**
      * アルバムID（例：1503002）
-     * @return
      */
     public int getAlbumId() {
         return m_albumId;
@@ -41,15 +40,13 @@ public class IdleCardInfo {
 
     /**
      * 属性（例：Cu）
-     * @return
      */
     public String getAttribute() {
         return m_attribute;
     }
 
     /**
-     * レア（例：SR+） 
-     * @return
+     * レア（例：SR+）
      */
     public String getRarity() {
         return m_rarity;
@@ -57,7 +54,6 @@ public class IdleCardInfo {
 
     /**
      * 称号（例：[ﾊﾛｳｨﾝぷちﾃﾞﾋﾞﾙ]）
-     * @return
      */
     public String getNamePrefix() {
         return m_namePrefix;
@@ -65,7 +61,6 @@ public class IdleCardInfo {
 
     /**
      * 名前（例：双葉杏） 
-     * @return
      */
     public String getName() {
         return m_name;
@@ -73,7 +68,6 @@ public class IdleCardInfo {
 
     /**
      * +付きかどうか（から文字　or +） 
-     * @return
      */
     public String getNamePost() {
         return m_namePost;
@@ -81,7 +75,6 @@ public class IdleCardInfo {
 
     /**
      * コスト（例：17）
-     * @return
      */
     public int getCost() {
         return m_cost;
@@ -89,7 +82,6 @@ public class IdleCardInfo {
 
     /**
      * アルバム攻（例：5280） 
-     * @return
      */
     public int getAttack() {
         return m_attack;
@@ -97,7 +89,6 @@ public class IdleCardInfo {
 
     /**
      * アルバム守（例：3840） 
-     * @return
      */
     public int getDefense() {
         return m_defense;
@@ -105,7 +96,6 @@ public class IdleCardInfo {
 
     /**
      * MAX攻（例：17490） 
-     * @return
      */
     public int getMaxAttack() {
         return m_maxAttack;
@@ -113,15 +103,13 @@ public class IdleCardInfo {
 
     /**
      * MAX守（例：12720）
-     * @return
      */
     public int getMaxDefense() {
         return m_maxDefense;
     }
 
     /**
-     * MAX確認（例：○） 
-     * @return
+     * MAX確認（例：○）
      */
     public String getMaxConfirmed() {
         return m_maxConfirmed;
@@ -129,55 +117,48 @@ public class IdleCardInfo {
 
     /**
      * MAX攻/コスト（例：1,028.8）
-     * @return
      */
     public double getAttackCospa() {
         return m_attackCospa;
     }
 
     /**
-     * MAX守/コスト（例：748.2） 
-     * @return
+     * MAX守/コスト（例：748.2）
      */
     public double getDefenseCospa() {
         return m_defenseCospa;
     }
 
     /**
-     * 特技（例：飴くれ） 
-     * @return
+     * 特技（例：飴くれ）
      */
     public String getSkillName() {
         return m_skillName;
     }
 
     /**
-     * 対象属性（例：キュート） 
-     * @return
+     * 対象属性（例：キュート）
      */
     public String getTargetAttr() {
         return m_targetAttr;
     }
 
     /**
-     * 攻守（例：攻） 
-     * @return
+     * 攻守（例：攻）
      */
     public String getAttdefType() {
         return m_attdefType;
     }
 
     /**
-     * 効果（例：特大～極大アップ） 
-     * @return
+     * 効果（例：特大～極大アップ）
      */
     public String getSkillEffect() {
         return m_skillEffect;
     }
 
     /**
-     * 備考（例：「ﾊﾛｳｨﾝﾊﾟｰﾃｨｰ」ｶﾞﾁｬ） 
-     * @return
+     * 備考（例：「ﾊﾛｳｨﾝﾊﾟｰﾃｨｰ」ｶﾞﾁｬ）
      */
     public String getRemarks() {
         return m_remarks;
@@ -185,89 +166,147 @@ public class IdleCardInfo {
 
     /**
      * 画像ハッシュ値
-     * @return
      */
     public String getImageHash() {
         return m_imageHash;
     }
 
-
+    /**
+     * アルバムID
+     */
     public void setAlbumId(int albumId) {
         m_albumId = albumId;
     }
 
+    /**
+     * 属性
+     */
     public void setAttribute(String attribute) {
         m_attribute = attribute;
     }
 
+    /**
+     * レア
+     */
     public void setRarity(String rarity) {
         m_rarity = rarity;
     }
 
+    /**
+     * 称号
+     */
     public void setNamePrefix(String namePrefix) {
         m_namePrefix = namePrefix;
     }
 
+    /**
+     * 名前 
+     */
     public void setName(String name) {
         m_name = name;
     }
 
+    /**
+     * ＋付きかどうか 
+     */
     public void setNamePost(String namePost) {
         m_namePost = namePost;
     }
 
+    /**
+     * コスト 
+     */
     public void setCost(int cost) {
         m_cost = cost;
     }
 
+    /**
+     * アルバム攻 
+     */
     public void setAttack(int attack) {
         m_attack = attack;
     }
 
+    /**
+     * アルバム守 
+     */
     public void setDefense(int defense) {
         m_defense = defense;
     }
 
+    /**
+     * MAX攻 
+     */
     public void setMaxAttack(int maxAttack) {
         m_maxAttack = maxAttack;
     }
 
+    /**
+     * MAX守 
+     */
     public void setMaxDefense(int maxDefense) {
         m_maxDefense = maxDefense;
     }
 
+    /**
+     * MAX確認 
+     */
     public void setMaxConfirmed(String maxConfirmed) {
         m_maxConfirmed = maxConfirmed;
     }
 
+    /**
+     * MAX攻/コスト 
+     */
     public void setAttackCospa(double attackCospa) {
         m_attackCospa = attackCospa;
     }
 
+    /**
+     * MAX守/コスト
+     */
     public void setDefenseCospa(double defenseCospa) {
         m_defenseCospa = defenseCospa;
     }
 
+    /**
+     * 特技 
+     */
     public void setSkillName(String skillName) {
         m_skillName = skillName;
     }
 
+    /**
+     * 対象属性
+     */
     public void setTargetAttr(String targetAttr) {
         m_targetAttr = targetAttr;
     }
 
+    /**
+     * 攻守タイプ
+     */
     public void setAttdefType(String attdefType) {
         m_attdefType = attdefType;
     }
 
+    /**
+     * 効果 
+     */
     public void setSkillEffect(String skillEffect) {
         m_skillEffect = skillEffect;
     }
 
+    /**
+     * 備考 
+     */
     public void setRemarks(String remarks) {
         m_remarks = remarks;
     }
 
+    /**
+     * 画像ハッシュ値 
+     */
     public void setImageHash(String imageHash) {
         m_imageHash = imageHash;
     }
@@ -279,22 +318,12 @@ public class IdleCardInfo {
      */
     public IdleCardInfo() {
     }
-    
+
+    /**
+     * デバッグ用表示文字列
+     * @return デバッグ用文字列
+     */
     public String toDebugString() {
         return "id=" + m_albumId + " hash=" + m_imageHash + " name=" + m_namePrefix + m_name + m_namePost;
     }
-    
-    public int getColor() {
-        return 0xFFF04228;
-    }
-    
-    /*
-    public String getCardUrl() {
-        return EnvPath.getIdleCardImageUrl(m_imageHash);
-    }
-    
-    public String getIconUrl() {
-        return EnvPath.getIdleIconImageUrl(m_imageHash);
-    }
-    */
 }

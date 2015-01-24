@@ -2,14 +2,12 @@ package net.poringsoft.imascggallery.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import net.poringsoft.imascggallery.utils.PSDebug;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +19,6 @@ public class SqlDao {
     //----------------------------------------------------------------------------
     public static final int RETRY_SQL_CALL = 5;		//リトライ回数
     public static final int WAIT_SLEEP_TIME = 50;		//スリープ時間
-    public static final String SPLIT_CHAR = "\t";
 
     //テーブル定数
     //----------------------------------------------------------------------------
@@ -294,14 +291,27 @@ public class SqlDao {
     
     //アイドルカード情報
     //----------------------------------------------------------------------------
+    /**
+     * アイドルカード情報を保存する
+     * @param info アイドルカード情報
+     * @return DB番号
+     */
     public long insertIdleCardInfo(IdleCardInfo info) {
         return dbInsert(IDLE_CARD_TABLE_MAME, null, getNewIdleCardInfoValues(info), RETRY_SQL_CALL);
     }
 
+    /**
+     * すべてのアイドルカード情報を削除する 
+     */
     public void deleteIdleCardInfoAll() {
         dbDelete(IDLE_CARD_TABLE_MAME, null, null, RETRY_SQL_CALL);
     }
 
+    /**
+     * アイドルカード情報からDBデータ挿入用データを生成する
+     * @param info アイドルカード情報
+     * @return DBデータ挿入データ
+     */
     private ContentValues getNewIdleCardInfoValues(IdleCardInfo info) {
         ContentValues values = new ContentValues();
 
@@ -329,6 +339,11 @@ public class SqlDao {
         return values;
     }
 
+    /**
+     * アイドルカード情報をDB選択データから取得する
+     * @param cursor カーソル
+     * @return アイドルカード情報
+     */
     private IdleCardInfo createIdleCardInfo(Cursor cursor)
     {
         IdleCardInfo cardInfo = new IdleCardInfo();
@@ -359,6 +374,13 @@ public class SqlDao {
         return cardInfo;
     }
 
+    /**
+     * アイドルカード情報を取得する 
+     * @param select 検索条件
+     * @param order 並び替え条件
+     * @param limit 上限値
+     * @return アイドルカード情報リスト
+     */
     public List<IdleCardInfo> selectIdleCardInfo(String select, String order, String limit)
     {
         PSDebug.d("select=" + select);
@@ -376,20 +398,33 @@ public class SqlDao {
 
     //アイドルプロフィール情報
     //----------------------------------------------------------------------------
+    /**
+     * アイドルプロフィール情報をDBに登録する
+     * @param info アイドルプロフィール情報
+     * @return DB番号
+     */
     public long insertIdleProfileInfo(IdleProfileInfo info) {
         return dbInsert(IDLE_PROFILE_TABLE_MAME, null, getNewIdleProfileInfoValues(info), RETRY_SQL_CALL);
     }
 
+    /**
+     * アイドルプロフィール情報をDBからすべて削除する 
+     */
     public void deleteIdleProfileInfoAll() {
         dbDelete(IDLE_PROFILE_TABLE_MAME, null, null, RETRY_SQL_CALL);
     }
 
+    /**
+     * アイドルプロフィール情報からDB挿入用データを作成する 
+     * @param info アイドルプロフィール除法
+     * @return DB挿入用データ
+     */
     private ContentValues getNewIdleProfileInfoValues(IdleProfileInfo info) {
         ContentValues values = new ContentValues();
 
         values.put(IDLE_PROFILE_COLUMN_NAME, info.getName());
         values.put(IDLE_PROFILE_COLUMN_KANA, info.getKana());
-        values.put(IDLE_PROFILE_COLUMN_AGO, info.getAgo());
+        values.put(IDLE_PROFILE_COLUMN_AGO, info.getAge());
         values.put(IDLE_PROFILE_COLUMN_HEIGHT, info.getHeight());
         values.put(IDLE_PROFILE_COLUMN_WEIGHT, info.getWeight());
         values.put(IDLE_PROFILE_COLUMN_BUST, info.getBust());
@@ -406,6 +441,11 @@ public class SqlDao {
         return values;
     }
 
+    /**
+     * 検索カーソルからアイドルプロフィール情報に変換する 
+     * @param cursor 検索カーソル
+     * @return アイドルプロフィール情報
+     */
     private IdleProfileInfo createIdleProfileInfo(Cursor cursor) {
         IdleProfileInfo info = new IdleProfileInfo();
         int id = cursor.getInt(0);
@@ -413,7 +453,7 @@ public class SqlDao {
 
         info.setName(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_NAME)));
         info.setKana(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_KANA)));
-        info.setAgo(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_AGO)));
+        info.setAge(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_AGO)));
         info.setHeight(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_HEIGHT)));
         info.setWeight(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_WEIGHT)));
         info.setBust(cursor.getInt(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_BUST)));
@@ -429,17 +469,34 @@ public class SqlDao {
 
         return info;
     }
-    
+
+    /**
+     * アイドルプロフィール情報を検索して返す 
+     * @param text 検索文字列（SqlSelectHelper使用）
+     * @param sortType 並び替え方法（SqlSelectHelper使用）
+     * @return アイドルプロフィール情報リスト
+     */
     public List<IdleProfileInfo> selectIdleProfileInfoSearchText(String text, int sortType) {
         String select = SqlSelectHelper.createSelectIldeProfile(text);
         String order = SqlSelectHelper.createOrderIdleProfile(sortType);
         return selectIdleProfileInfo(select, order, null);
     }
 
+    /**
+     * アイドルプロフィール情報をすべて取得する
+     * @return アイドルプロフィール情報リスト
+     */
     public List<IdleProfileInfo> selectIdleProfileInfoAll() {
         return selectIdleProfileInfo(null, null, null);
     }
-    
+
+    /**
+     * アイドルプロフィール情報を検索して返す 
+     * @param select 検索文字列（where）
+     * @param order 並び替え方法（order）
+     * @param limit 検索上限
+     * @return アイドルプロフィール情報リスト
+     */
     public List<IdleProfileInfo> selectIdleProfileInfo(String select, String order, String limit) {
         PSDebug.d("select=" + select);
         PSDebug.d("order=" + order);
@@ -457,14 +514,27 @@ public class SqlDao {
 
     //アイドルユニット情報
     //----------------------------------------------------------------------------
+    /**
+     * アイドルユニット情報をDBに保存する
+     * @param info アイドルユニット情報
+     * @return DB番号
+     */
     public long insertIdleUnitInfo(IdleUnitInfo info) {
         return dbInsert(IDLE_UNIT_TABLE_MAME, null, getNewIdleUnitInfoValues(info), RETRY_SQL_CALL);
     }
 
+    /**
+     * アイドルユニット情報をすべて削除する 
+     */
     public void deleteIdleUnitInfoAll() {
         dbDelete(IDLE_UNIT_TABLE_MAME, null, null, RETRY_SQL_CALL);
     }
 
+    /**
+     * アイドルユニット情報をDB挿入データに変換する 
+     * @param info アイドルユニット情報
+     * @return DB挿入データ
+     */
     private ContentValues getNewIdleUnitInfoValues(IdleUnitInfo info) {
         ContentValues values = new ContentValues();
 
@@ -474,6 +544,11 @@ public class SqlDao {
         return values;
     }
 
+    /**
+     * アイドルユニット情報を検索カーソルから変換する 
+     * @param cursor 検索カーソル
+     * @return アイドルユニット情報
+     */
     private IdleUnitInfo createIdleUnitInfo(Cursor cursor) {
         IdleUnitInfo info = new IdleUnitInfo();
         int id = cursor.getInt(0);
@@ -485,10 +560,21 @@ public class SqlDao {
         return info;
     }
 
+    /**
+     * アイドルユニット情報をすべて取得する 
+     * @return アイドルユニット情報リスト
+     */
     public List<IdleUnitInfo> selectIdleUnitInfoAll() {
         return selectIdleUnitInfo(null, null, null);
     }
 
+    /**
+     * アイドルユニット情報を検索して返す
+     * @param select 検索条件
+     * @param order 並び替え条件
+     * @param limit 上限値
+     * @return アイドルユニット情報リスト
+     */
     public List<IdleUnitInfo> selectIdleUnitInfo(String select, String order, String limit) {
         PSDebug.d("select=" + select);
         PSDebug.d("order=" + order);

@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
+ * DBアクセス管理クラス
  * Created by mry on 15/01/18.
  */
 public class SqlAccessManager {
@@ -125,6 +125,11 @@ public class SqlAccessManager {
     
     //アイドル情報関連
     //---------------------------------------------
+    /**
+     * アイドルカード情報をDBに保存する
+     * 現在設定されているデータはすべて削除される
+     * @param infoList アイドルカード情報一覧
+     */
     public void insertIdleCardInfoList(List<IdleCardInfo> infoList)
     {
         SqlDao dao = open(OPEN_MODE_READWRITE);
@@ -153,19 +158,25 @@ public class SqlAccessManager {
             dao.Close();
         }
     }
-    
+
+    /**
+     * アイドルカード情報を取得する
+     * @param searchText 検索文字列
+     * @return カード情報一覧
+     */
     public List<IdleCardInfo> selectIdleCardInfo(String searchText)
     {
         SqlDao dao = open(OPEN_MODE_READONLY);
         if (dao == null)
         {
-            return new ArrayList<IdleCardInfo>();
+            return new ArrayList<>();
         }
 
         List<IdleCardInfo> infoList;
         dao.beginTransaction();
         try
         {
+            //TODO: 仮実装
             infoList = dao.selectIdleCardInfo(null, null, "10");
             dao.setTransactionSuccessful();
         }
@@ -181,6 +192,11 @@ public class SqlAccessManager {
 
     //アイドルプロフィール関連
     //---------------------------------------------
+    /**
+     * アイドルプロフィール情報をDBに保存する
+     * 現在保存されている情報はすべて削除される 
+     * @param infoList プロフィール情報リスト
+     */
     public void insertIdleProfileInfoList(List<IdleProfileInfo> infoList)
     {
         SqlDao dao = open(OPEN_MODE_READWRITE);
@@ -210,12 +226,17 @@ public class SqlAccessManager {
         }
     }
 
+    /**
+     * プロフィール情報一覧を取得する
+     * @param searchText 検索文字列
+     * @return プロフィール情報一覧
+     */
     public List<IdleProfileInfo> selectIdleProfileInfo(String searchText)
     {
         SqlDao dao = open(OPEN_MODE_READONLY);
         if (dao == null)
         {
-            return new ArrayList<IdleProfileInfo>();
+            return new ArrayList<>();
         }
 
         List<IdleProfileInfo> infoList;
@@ -235,8 +256,13 @@ public class SqlAccessManager {
         return infoList;
     }
 
-    //アイドルプロフィール関連
+    //アイドルユニット関連
     //---------------------------------------------
+    /**
+     * アイドルユニット情報をDBに保存する
+     * 現在保存されている情報はすべて削除される 
+     * @param infoList アイドルユニット情報一覧
+     */
     public void insertIdleUnitInfoList(List<IdleUnitInfo> infoList)
     {
         SqlDao dao = open(OPEN_MODE_READWRITE);
@@ -266,12 +292,16 @@ public class SqlAccessManager {
         }
     }
 
+    /**
+     * アイドルユニット一覧情報を取得する
+     * @return ユニット一覧情報
+     */
     public List<IdleUnitInfo> selectIdleUnitInfo()
     {
         SqlDao dao = open(OPEN_MODE_READONLY);
         if (dao == null)
         {
-            return new ArrayList<IdleUnitInfo>();
+            return new ArrayList<>();
         }
 
         List<IdleUnitInfo> infoList;

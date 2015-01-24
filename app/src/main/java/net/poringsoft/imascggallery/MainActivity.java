@@ -1,27 +1,17 @@
 package net.poringsoft.imascggallery;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
@@ -30,7 +20,9 @@ import net.poringsoft.imascggallery.data.SqlSelectHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
 import net.poringsoft.imascggallery.utils.PSUtils;
 
-
+/**
+ * メイン画面Activity
+ */
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     //定数
@@ -327,7 +319,11 @@ public class MainActivity extends ActionBarActivity
         //this.startActivityForResult(intent, REQ_CODE_PREF);
     }
 
+    /**
+     * データ更新開始 
+     */
     private void startUpdate() {
+        //TODO: 更新中ダイアログは未実装
         IdleInfoLoader idleHelper = new IdleInfoLoader(this);
         boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getProfileFilePath()
                 , EnvPath.getHashFilePath(), EnvPath.getUnitListFilePath());

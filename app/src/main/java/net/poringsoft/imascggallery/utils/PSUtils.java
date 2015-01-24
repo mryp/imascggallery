@@ -111,7 +111,13 @@ public class PSUtils {
 
         return ret;
     }
-    
+
+    /**
+     * 文字列を小数点数に変換する
+     * @param text 文字列
+     * @param def 失敗時のデフォルト値
+     * @return 小数点数
+     */
     public static double tryParseDouble(String text, double def)
     {
         double ret = 0.0;
