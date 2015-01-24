@@ -155,4 +155,12 @@ public class SqlSelectHelper {
 
         return order;
     }
+
+    public static String createSelectIldeCard(String searchText){
+        String nameQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
+
+        return SqlDao.IDLE_CARD_COLUMN_NAME
+                + " LIKE "
+                + nameQuery;
+    }
 }

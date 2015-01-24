@@ -396,6 +396,17 @@ public class SqlDao {
         return list;
     }
 
+    /**
+     * アイドルカード情報を検索して返す
+     * @param text 検索文字列（SqlSelectHelper使用）
+     * @return アイドルカード情報リスト
+     */
+    public List<IdleCardInfo> selectIdleInfoSearchText(String text) {
+        String select = SqlSelectHelper.createSelectIldeCard(text);
+        return selectIdleCardInfo(select, null, null);
+    }
+    
+    
     //アイドルプロフィール情報
     //----------------------------------------------------------------------------
     /**

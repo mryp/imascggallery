@@ -123,7 +123,7 @@ public class SqlAccessManager {
         return db;
     }
     
-    //アイドル情報関連
+    //アイドルカード情報関連
     //---------------------------------------------
     /**
      * アイドルカード情報をDBに保存する
@@ -176,8 +176,7 @@ public class SqlAccessManager {
         dao.beginTransaction();
         try
         {
-            //TODO: 仮実装
-            infoList = dao.selectIdleCardInfo(null, null, "10");
+            infoList = dao.selectIdleInfoSearchText(searchText);
             dao.setTransactionSuccessful();
         }
         finally

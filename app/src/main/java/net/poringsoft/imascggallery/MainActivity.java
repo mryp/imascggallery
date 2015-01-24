@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity
     //定数
     //-------------------------------------------------------------------------
     public static final int REQ_CODE_PREF = 1;         //設定画面から
+    public static final int REQ_CODE_CARD_LIST = 2;    //カードリスト画面から
 
     private static final String ARG_TITLE = "ARG_TITLE";
     private static final String ARG_SEARCH_TEXT = "ARG_SEARCH_TEXT";
@@ -346,6 +347,9 @@ public class MainActivity extends ActionBarActivity
         PSDebug.d("requestCode=" + requestCode + " resultCode=" + resultCode);
         if (requestCode == REQ_CODE_PREF) {
             m_isReloadCardList = true;  //Resumeで再読み込み
+        }
+        else if (requestCode == REQ_CODE_CARD_LIST) {
+            m_isReloadCardList = false;
         }
     }
 

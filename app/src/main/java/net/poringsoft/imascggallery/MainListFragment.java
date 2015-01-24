@@ -219,16 +219,12 @@ public class MainListFragment extends ListFragment {
         if (position < 0) {
             return; //ヘッダ部なので何もしない
         }
+        
+        //カード一覧画面へ遷移
         IdleProfileInfo selectInfo = (IdleProfileInfo)m_adapter.getItem(position);
-        PSUtils.toast(getActivity(), selectInfo.getName() + "を詳細表示します");
-
-        //TODO: 詳細画面へ遷移する（未実装）
-        /*
-        Intent intent = new Intent(getActivity(), CardInfoActivity.class);
-        intent.putExtra(CardInfoActivity.INTENT_MODEL_NUMBER, selectInfo.getModelNumber());
-        intent.putExtra(CardInfoActivity.INTENT_SEARCH_TEXT, m_searchText);
-        getActivity().startActivityForResult(intent, MainActivity.REQ_CODE_CARD_INFO);
-        */
+        Intent intent = new Intent(getActivity(), CardListActivity.class);
+        intent.putExtra(CardListActivity.INTENT_IDLE_NAME, selectInfo.getName());
+        getActivity().startActivityForResult(intent, MainActivity.REQ_CODE_CARD_LIST);
     }
 
     /**
