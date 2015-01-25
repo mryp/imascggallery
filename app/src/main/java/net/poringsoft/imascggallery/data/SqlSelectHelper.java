@@ -83,7 +83,7 @@ public class SqlSelectHelper {
         String kanaSearchText = KanamojiCharUtils.zenkakuHiraganaToZenkakuKatakana(searchText);
 
         //部分一致検索
-        String nameQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
+        String nameQuery = DatabaseUtils.sqlEscapeString(searchText);
         String kanaQuery = DatabaseUtils.sqlEscapeString("%"+kanaSearchText+"%");
 
         return SqlDao.IDLE_PROFILE_COLUMN_NAME
