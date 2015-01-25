@@ -19,6 +19,7 @@ import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.SqlAccessManager;
+import net.poringsoft.imascggallery.utils.KanamojiCharUtils;
 import net.poringsoft.imascggallery.utils.PSDebug;
 
 /**
@@ -128,8 +129,8 @@ public class CardDetailFragment extends Fragment {
 
     /**
      * カード情報を設定する
-     * @param parentView
-     * @param cardInfo
+     * @param parentView レイアウトビュー
+     * @param cardInfo カード情報
      */
     private void setCardInfo(View parentView, IdleCardInfo cardInfo) {
         //カードタイトル
@@ -145,5 +146,40 @@ public class CardDetailFragment extends Fragment {
         if (!cardInfo.getImageHash().equals("")) {
             ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(cardInfo.getImageHash(), true), imageView);
         }
+        
+        TextView headTextView = (TextView)parentView.findViewById(R.id.headTextView);        
+        String headText = "属性\nレアリティ\nコスト\nアルバム攻\nアルバム守\nMAX攻\nMAX守\nMAX確認\nMAX攻/コスト\nMAX守/コスト\n特技名\n対象属性\n攻守\n効果\n備考";
+        headTextView.setText(headText);
+
+        TextView detailTextView = (TextView)parentView.findViewById(R.id.detailTextView);
+        String detailText = cardInfo.getAttribute() + "\n"
+                + cardInfo.getRarity() + "\n"
+                + cardInfo.getCost() + "\n"
+                + cardInfo.getAttack() + "\n"
+                + cardInfo.getDefense() + "\n"
+                + cardInfo.getMaxAttack() + "\n"
+                + cardInfo.getMaxDefense() + "\n"
+                + cardInfo.getMaxConfirmed() + "\n"
+                + cardInfo.getAttackCospa() + "\n"
+                + cardInfo.getDefenseCospa() + "\n"
+                + toDetailStringData(cardInfo.getSkillName()) + "\n"
+                + toDetailStringData(cardInfo.getTargetAttr()) + "\n"
+                + toDetailStringData(cardInfo.getAttdefType()) + "\n"
+                + toDetailStringData(cardInfo.getSkillEffect()) + "\n"
+                + toDetailStringData(cardInfo.getRemarks());
+        detailTextView.setText(detailText);
+    }
+
+    /**
+     * パラメーター詳細の文字列データを表示用に変換して返す
+     * @param text パラメーターデータ文字列
+     * @return 変換後のデータ
+     */
+    private String toDetailStringData(String text) {
+        if (text.equals("")) {
+            return " ";
+        }
+
+        return KanamojiCharUtils.hankakuKatakanaToZenkakuKatakana(text);
     }
 }
