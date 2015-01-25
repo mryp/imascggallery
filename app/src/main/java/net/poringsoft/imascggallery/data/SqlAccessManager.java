@@ -188,6 +188,30 @@ public class SqlAccessManager {
         return infoList;
     }
 
+    public IdleCardInfo selectIdleCardInfoFromAlbumId(int albumId)
+    {
+        SqlDao dao = open(OPEN_MODE_READONLY);
+        if (dao == null)
+        {
+            return null;
+        }
+
+        IdleCardInfo info;
+        dao.beginTransaction();
+        try
+        {
+            info = dao.selectIdleInfoAlbumId(albumId);
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+
+        return info;
+    }
+
 
     //アイドルプロフィール関連
     //---------------------------------------------

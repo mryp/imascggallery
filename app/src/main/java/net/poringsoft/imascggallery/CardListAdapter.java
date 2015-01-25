@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleCardInfo;
 
@@ -23,7 +24,6 @@ import java.util.List;
 public class CardListAdapter extends BaseAdapter {
     //定数
     //--------------------------------------------
-    private static final Point CARD_IMAGE_SIZE = new Point(640, 800);   //カード実サイズ
     private static final int IMAGE_PADDING = 1;     //カードサイズパディング（ピクセル）
     private static final int DEF_CLOMUN_SIZE = 3;   //デフォルトの列数
     
@@ -100,7 +100,7 @@ public class CardListAdapter extends BaseAdapter {
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(IMAGE_PADDING, IMAGE_PADDING, IMAGE_PADDING, IMAGE_PADDING);
             
-            double xyPercentage = (double)CARD_IMAGE_SIZE.y / (double)CARD_IMAGE_SIZE.x;
+            double xyPercentage = (double)EnvOption.CARD_IMAGE_SIZE.y / (double)EnvOption.CARD_IMAGE_SIZE.x;
             double viewWidth = (double)m_dispSize.x / (double)m_gridGolumns;
             imageView.setLayoutParams(new GridView.LayoutParams((int)viewWidth, (int)(viewWidth * xyPercentage)));
         }

@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import net.poringsoft.imascggallery.data.IdleCardInfo;
@@ -58,6 +60,12 @@ public class CardListActivity extends ActionBarActivity {
         restoreActionBar();
         m_sqlManager = new SqlAccessManager(this);
         m_girdView = (GridView)findViewById(R.id.mainGridView);
+        m_girdView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onItemClickImage(position);
+            }
+        });
 
         //リスト読み込み開始
         readList();
@@ -118,6 +126,17 @@ public class CardListActivity extends ActionBarActivity {
         }
     }
 
+    private void onItemClickImage(int postion) {
+        IdleCardInfo selectInfo = (IdleCardInfo)m_girdView.getItemAtPosition(postion);
+        if (selectInfo == null) {
+            return;
+        }
+
+        Intent intent = new Intent(this, CardDetailActivity.class);
+        intent.putExtra(CardDetailActivity.INTENT_IDLE_NAME, selectInfo.getName());
+        intent.putExtra(CardDetailActivity.INTENT_ALBUM_ID, selectInfo.getAlbumId());
+        this.startActivity(intent);
+    }
 
     /**
      * メニュー設定

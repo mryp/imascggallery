@@ -83,7 +83,7 @@ public class MainListAdapter  extends BaseAdapter {
             return null;
         }
 
-        //カード画像
+        //アイコン画像
         ImageView cardImage = (ImageView)view.findViewById(R.id.cardImageView);
         cardImage.setImageBitmap(null);
         if (!info.getImageHash().equals("")) {

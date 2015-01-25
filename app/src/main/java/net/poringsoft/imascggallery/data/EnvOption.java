@@ -2,6 +2,7 @@ package net.poringsoft.imascggallery.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.preference.PreferenceManager;
 
 import net.poringsoft.imascggallery.utils.PSDebug;
@@ -15,6 +16,9 @@ public class EnvOption {
     //通信関連
     public static final String NET_GET_AGENT = "Mozilla/5.0 (Linux; Android; ja-jp;)";
     public static final int NET_GET_TIMEOUT = 10000;
+    
+    //カード情報
+    public static final Point CARD_IMAGE_SIZE = new Point(640, 800);   //カード実サイズ
     
     //設定値
     public static final String KEY_MAIN_LIST_SORT_TYPE = " main_list_sort_type";     //メインリストの並び替え値

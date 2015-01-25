@@ -156,11 +156,27 @@ public class SqlSelectHelper {
         return order;
     }
 
+    /**
+     * アイドル名からアイドルカード情報を検索するセレクト文を生成する
+     * @param searchText アイドル名
+     * @return セレクト文
+     */
     public static String createSelectIldeCard(String searchText){
         String nameQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
 
         return SqlDao.IDLE_CARD_COLUMN_NAME
                 + " LIKE "
                 + nameQuery;
+    }
+
+    /**
+     * アルバムIDからアイドルカード情報を検索するセレクト文を生成する
+     * @param albumId アルバムID
+     * @return セレクト文
+     */
+    public static String createSelectIldeCardFromAlbumId(int albumId) {
+        return SqlDao.IDLE_CARD_COLUMN_ALBUM_ID
+                + "="
+                + String.valueOf(albumId);
     }
 }

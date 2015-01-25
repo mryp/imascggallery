@@ -405,7 +405,21 @@ public class SqlDao {
         String select = SqlSelectHelper.createSelectIldeCard(text);
         return selectIdleCardInfo(select, null, null);
     }
-    
+
+    /**
+     * 指定したアイドルIDからアイドルカード情報を検索して返す 
+     * @param albumId アルバムID
+     * @return アイドルカード情報（見つからなかった時はnul）
+     */
+    public IdleCardInfo selectIdleInfoAlbumId(int albumId) {
+        String select = SqlSelectHelper.createSelectIldeCardFromAlbumId(albumId);
+        List<IdleCardInfo> cardList = selectIdleCardInfo(select, null, null);
+        if (cardList == null || cardList.size() == 0) {
+            return null;
+        }
+        
+        return cardList.get(0);
+    }
     
     //アイドルプロフィール情報
     //----------------------------------------------------------------------------
