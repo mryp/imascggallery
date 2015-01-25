@@ -240,7 +240,8 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-                startSetting();
+                PSUtils.toast(this, "未実装");
+                //startSetting();
                 return true;
             case R.id.action_update:
                 startUpdate();
