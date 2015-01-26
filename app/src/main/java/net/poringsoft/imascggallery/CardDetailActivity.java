@@ -1,5 +1,10 @@
 package net.poringsoft.imascggallery;
 
+import android.app.SearchManager;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,7 +14,10 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.SqlAccessManager;
 import net.poringsoft.imascggallery.utils.PSDebug;
@@ -169,21 +177,36 @@ public class CardDetailActivity extends ActionBarActivity {
             m_viewPager.setAdapter(new CardPageAdapter(getSupportFragmentManager(), result));
             m_viewPager.setCurrentItem(getPositionFromAlbumId(m_infoList, m_selectAlbumId));
         }
+    }
 
-        private int getPositionFromAlbumId(List<IdleCardInfo> cardList, int albimId)
+    /**
+     * カードリストから指定したアルバムIDの位置を取得する
+     * @param cardList カードリスト
+     * @param albumId アルバムID
+     * @return カードリスト位置
+     */
+    private int getPositionFromAlbumId(List<IdleCardInfo> cardList, int albumId) {
+        for (int i=0; i<cardList.size(); i++)
         {
-            PSDebug.d("albimId=" + albimId);
-            for (int i=0; i<cardList.size(); i++)
+            if (cardList.get(i).getAlbumId() == albumId)
             {
-                if (cardList.get(i).getAlbumId() == albimId)
-                {
-                    return i;
-                }
+                return i;
             }
-
-            //見つからなかったのでデフォルト位置を返す
-            return 0;
         }
+
+        //見つからなかったのでデフォルト位置を返す
+        return 0;
+    }
+
+    /**
+     * カードリストから指定したアルバムIDを取得する
+     * @param cardList カードリスト
+     * @param albumId アルバムID
+     * @return カード情報
+     */
+    private IdleCardInfo getCardInfoFromAlbumId(List<IdleCardInfo> cardList, int albumId) {
+        int pos = getPositionFromAlbumId(cardList, albumId);
+        return cardList.get(pos);
     }
 
     /**
@@ -228,4 +251,74 @@ public class CardDetailActivity extends ActionBarActivity {
     }
 
 
+    /**
+     * メニュー設定
+     * @param menu メニューアイテム
+     * @return メニュー設定したかどうか
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.carddetail, menu);
+        restoreActionBar();
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * メニュー表示前イベント
+     * @param menu メニューオブジェクト
+     * @return 処理を行ったかどうか
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     * メニュー選択時処理
+     * @param item 選択アイテム
+     * @return メニューを選択したかどうか
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_share:
+                showShare();
+                return true;
+            case R.id.action_copy_url:
+                copyImageUrl();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * カード名で検索を行う
+     */
+    private void showShare() {
+        IdleCardInfo cardInfo = getCardInfoFromAlbumId(m_infoList, m_selectAlbumId);
+        String cardName = cardInfo.getNamePrefix() + cardInfo.getName() + cardInfo.getNamePost();
+
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, cardName);
+        startActivity(intent);
+    }
+
+    /**
+     * 画像URLをクリップボードにコピーする
+     */
+    private void copyImageUrl() {
+        IdleCardInfo cardInfo = getCardInfoFromAlbumId(m_infoList, m_selectAlbumId);
+        String url = EnvPath.getIdleCardImageUrlDirect(cardInfo.getImageHash());
+
+        ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData.Item item = new ClipData.Item(url);
+        String[] mimeTypes = new String[] {
+                ClipDescription.MIMETYPE_TEXT_PLAIN
+        };
+        ClipData clip = new ClipData("data", mimeTypes, item);
+        clipboardManager.setPrimaryClip(clip);
+
+        PSUtils.toast(this, "画像URLをクリップボードにコピーしました");
+    }
 }
