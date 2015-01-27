@@ -30,11 +30,12 @@ public class CardDetailFragment extends Fragment {
     //定数
     //---------------------------------------------------------------------
     private static final String ARG_SELECT_ALBUM_ID = "album_id";
+    private static final String ARG_SHOW_CARD_STATUS = "show_card_status";
 
     //フィールド
     //---------------------------------------------------------------------
     private int m_selectAlbumId= 0;
-    private SqlAccessManager m_sqlManager;
+    private boolean m_showCardStatus = false;
     private Point m_dispSize = new Point();
 
 
@@ -45,10 +46,11 @@ public class CardDetailFragment extends Fragment {
      * @param albumId アルバムID
      * @return インスタンス
      */
-    public static CardDetailFragment newInstance(int albumId) {
+    public static CardDetailFragment newInstance(int albumId, boolean showCardStatus) {
         CardDetailFragment fragment = new CardDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SELECT_ALBUM_ID, albumId);
+        args.putBoolean(ARG_SHOW_CARD_STATUS, showCardStatus);
         fragment.setArguments(args);
         return fragment;
     }
@@ -94,22 +96,24 @@ public class CardDetailFragment extends Fragment {
         if (savedInstanceState != null) {
             //型番の復元
             m_selectAlbumId = savedInstanceState.getInt(ARG_SELECT_ALBUM_ID);
+            m_showCardStatus = savedInstanceState.getBoolean(ARG_SHOW_CARD_STATUS);
         }
         else {
             //親画面からの型番の取得
             Bundle argment = this.getArguments();
             if (argment != null) {
                 m_selectAlbumId = argment.getInt(ARG_SELECT_ALBUM_ID);
+                m_showCardStatus = argment.getBoolean(ARG_SHOW_CARD_STATUS);
             }
         }
 
         //フィールド初期化
         WindowManager wm = (WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getSize(m_dispSize);
-        m_sqlManager = new SqlAccessManager(getActivity());
+        SqlAccessManager sqlManager = new SqlAccessManager(getActivity());
 
         //型番からカードデータを取得し表示にセットする
-        IdleCardInfo cardInfo = m_sqlManager.selectIdleCardInfoFromAlbumId(m_selectAlbumId);
+        IdleCardInfo cardInfo = sqlManager.selectIdleCardInfoFromAlbumId(m_selectAlbumId);
         if (cardInfo != null) {
             setCardInfo(getView(), cardInfo);
         }
@@ -146,28 +150,36 @@ public class CardDetailFragment extends Fragment {
         if (!cardInfo.getImageHash().equals("")) {
             ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(cardInfo.getImageHash(), true), imageView);
         }
-        
-        TextView headTextView = (TextView)parentView.findViewById(R.id.headTextView);        
-        String headText = "属性\nレアリティ\nコスト\nアルバム攻\nアルバム守\nMAX攻\nMAX守\nMAX確認\nMAX攻/コスト\nMAX守/コスト\n特技名\n対象属性\n攻守\n効果\n備考";
-        headTextView.setText(headText);
 
-        TextView detailTextView = (TextView)parentView.findViewById(R.id.detailTextView);
-        String detailText = cardInfo.getAttribute() + "\n"
-                + cardInfo.getRarity() + "\n"
-                + cardInfo.getCost() + "\n"
-                + cardInfo.getAttack() + "\n"
-                + cardInfo.getDefense() + "\n"
-                + cardInfo.getMaxAttack() + "\n"
-                + cardInfo.getMaxDefense() + "\n"
-                + cardInfo.getMaxConfirmed() + "\n"
-                + cardInfo.getAttackCospa() + "\n"
-                + cardInfo.getDefenseCospa() + "\n"
-                + toDetailStringData(cardInfo.getSkillName()) + "\n"
-                + toDetailStringData(cardInfo.getTargetAttr()) + "\n"
-                + toDetailStringData(cardInfo.getAttdefType()) + "\n"
-                + toDetailStringData(cardInfo.getSkillEffect()) + "\n"
-                + toDetailStringData(cardInfo.getRemarks());
-        detailTextView.setText(detailText);
+        LinearLayout statusLayout = (LinearLayout)parentView.findViewById(R.id.statusLayout);
+        if (m_showCardStatus) {
+            statusLayout.setVisibility(View.VISIBLE);
+
+            TextView headTextView = (TextView)parentView.findViewById(R.id.headTextView);
+            String headText = "属性\nレアリティ\nコスト\nアルバム攻\nアルバム守\nMAX攻\nMAX守\nMAX確認\nMAX攻/コスト\nMAX守/コスト\n特技名\n対象属性\n攻守\n効果\n備考";
+            headTextView.setText(headText);
+
+            TextView detailTextView = (TextView)parentView.findViewById(R.id.detailTextView);
+            String detailText = cardInfo.getAttribute() + "\n"
+                    + cardInfo.getRarity() + "\n"
+                    + cardInfo.getCost() + "\n"
+                    + cardInfo.getAttack() + "\n"
+                    + cardInfo.getDefense() + "\n"
+                    + cardInfo.getMaxAttack() + "\n"
+                    + cardInfo.getMaxDefense() + "\n"
+                    + cardInfo.getMaxConfirmed() + "\n"
+                    + cardInfo.getAttackCospa() + "\n"
+                    + cardInfo.getDefenseCospa() + "\n"
+                    + toDetailStringData(cardInfo.getSkillName()) + "\n"
+                    + toDetailStringData(cardInfo.getTargetAttr()) + "\n"
+                    + toDetailStringData(cardInfo.getAttdefType()) + "\n"
+                    + toDetailStringData(cardInfo.getSkillEffect()) + "\n"
+                    + toDetailStringData(cardInfo.getRemarks());
+            detailTextView.setText(detailText);
+        }
+        else {
+            statusLayout.setVisibility(View.GONE);
+        }
     }
 
     /**
