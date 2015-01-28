@@ -117,6 +117,18 @@ public class SqlDao {
             IDLE_UNIT_COLUMN_CHAR_NAME,
     };
 
+    //ブックマーク情報テーブル
+    public static final String BOOKMARK_TABLE_MAME = "bookmarktbl";
+    public static final String BOOKMARK_COLUMN_ID = "rowid";
+    public static final String BOOKMARK_COLUMN_NAME = "m_name";
+    public static final String BOOKMARK_COLUMN_INDEX = "m_index";
+    public static final String BOOKMARK_COLUMN_UPTIME = "m_uptime";
+    public static final String[] BOOKMARK_COLUMNS = {
+            BOOKMARK_COLUMN_ID,
+            BOOKMARK_COLUMN_NAME,
+            BOOKMARK_COLUMN_INDEX,
+            BOOKMARK_COLUMN_UPTIME,
+    };
 
     //フィールド
     //----------------------------------------------------------------------------
@@ -502,6 +514,16 @@ public class SqlDao {
      * @return アイドルプロフィール情報リスト
      */
     public List<IdleProfileInfo> selectIdleProfileInfoSearchText(String text, int sortType) {
+        if (SqlSelectHelper.isBookmarkCommand(text)) {
+            //ブックマークの時はブックマーク一覧から名前リストを取得する
+            List<BookmarkInfo> bookmarkList = selectBookmarkInfoAll();
+            List<String> nameList = new ArrayList<>();
+            for (BookmarkInfo bookmarkInfo : bookmarkList) {
+                nameList.add(bookmarkInfo.getName());
+            }
+            text = SqlSelectHelper.createCommandNameList(nameList);
+        }
+
         String select = SqlSelectHelper.createSelectIldeProfile(text);
         String order = SqlSelectHelper.createOrderIdleProfile(sortType);
         return selectIdleProfileInfo(select, order, null);
@@ -613,6 +635,122 @@ public class SqlDao {
 
         return list;
     }
+
+
+    //アイドルブックマーク情報
+    //----------------------------------------------------------------------------
+    /**
+     * ブックマーク情報を追加する
+     * @param info ブックマーク情報
+     * @return DB番号
+     */
+    public long insertBookmarkInfo(BookmarkInfo info) {
+        return dbInsert(BOOKMARK_TABLE_MAME, null, getNewBookmarkInfoValues(info), RETRY_SQL_CALL);
+    }
+
+    /**
+     * ブックマーク情報を更新する
+     * @param info ブックマーク情報
+     */
+    public void updateBookmarkInfo(BookmarkInfo info)
+    {
+        String where = BOOKMARK_COLUMN_NAME + "='" + info.getName() + "'";
+        dbUpdate(BOOKMARK_TABLE_MAME,  getNewBookmarkInfoValues(info), where, null, RETRY_SQL_CALL);
+    }
+
+    /**
+     * 指定した名前を持つブックマークを削除する
+     * @param info ブックマーク情報
+     */
+    public void deleteBookmarkInfo(BookmarkInfo info) {
+        String where = BOOKMARK_COLUMN_NAME + "='" + info.getName() + "'";
+        dbDelete(BOOKMARK_TABLE_MAME, where, null, RETRY_SQL_CALL);
+    }
+
+    /**
+     * すべてのブックマーク情報を削除する
+     */
+    public void deleteBookmarkInfoAll() {
+        dbDelete(BOOKMARK_TABLE_MAME, null, null, RETRY_SQL_CALL);
+    }
+
+    /**
+     * ブックマーク情報追加用データを生成する
+     * @param info ブックマーク情報
+     * @return DB追加データ
+     */
+    private ContentValues getNewBookmarkInfoValues(BookmarkInfo info) {
+        ContentValues values = new ContentValues();
+
+        values.put(BOOKMARK_COLUMN_NAME, info.getName());
+        values.put(BOOKMARK_COLUMN_INDEX, info.getIndex());
+        values.put(BOOKMARK_COLUMN_UPTIME, info.getUptime());
+
+        return values;
+    }
+
+    /**
+     * ブックマーク情報をカーソルから取得生成する
+     * @param cursor セレクトカーソル
+     * @return ブックマーク情報
+     */
+    private BookmarkInfo createBookmarkInfo(Cursor cursor) {
+        BookmarkInfo info = new BookmarkInfo();
+        int id = cursor.getInt(0);
+        PSDebug.d("id=" + id);
+
+        info.setName(cursor.getString(cursor.getColumnIndex(BOOKMARK_COLUMN_NAME)));
+        info.setIndex(cursor.getInt(cursor.getColumnIndex(BOOKMARK_COLUMN_INDEX)));
+        info.setUptime(cursor.getLong(cursor.getColumnIndex(BOOKMARK_COLUMN_UPTIME)));
+
+        return info;
+    }
+
+    /**
+     * すべてのブックマーク情報を取得する
+     * @return ブックマーク情報リスト
+     */
+    public List<BookmarkInfo> selectBookmarkInfoAll() {
+        return selectBookmarkInfo(null, null, null);
+    }
+
+    /**
+     * ブックマーク情報を名前から取得する
+     * @param name 検索名
+     * @return ブックマーク情報
+     */
+    public BookmarkInfo selectBookmarkInfo(String name) {
+        String select = SqlSelectHelper.createBookmarkNameSelect(name);
+
+        List<BookmarkInfo> infoList = selectBookmarkInfo(select, null, null);
+        if (infoList == null || infoList.size() == 0) {
+            return null;
+        }
+
+        return infoList.get(0);
+    }
+
+    /**
+     * 指定したパラメーターでブックマーク情報を検索する
+     * @param select Select分
+     * @param order order分
+     * @param limit 上限数
+     * @return ブックマーク情報リスト
+     */
+    public List<BookmarkInfo> selectBookmarkInfo(String select, String order, String limit) {
+        PSDebug.d("select=" + select);
+        PSDebug.d("order=" + order);
+        ArrayList<BookmarkInfo> list = new ArrayList<BookmarkInfo>();
+        Cursor cursor = m_db.query(BOOKMARK_TABLE_MAME, BOOKMARK_COLUMNS, select, null, null, null, order, limit);
+        while (cursor.moveToNext())
+        {
+            list.add(createBookmarkInfo(cursor));
+        }
+        cursor.close();
+
+        return list;
+    }
+
 }
 
 

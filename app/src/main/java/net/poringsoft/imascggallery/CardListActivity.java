@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import net.poringsoft.imascggallery.data.BookmarkInfo;
 import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.IdleProfileInfo;
 import net.poringsoft.imascggallery.data.SqlAccessManager;
@@ -59,6 +60,12 @@ public class CardListActivity extends ActionBarActivity {
         //フィールド初期化
         restoreActionBar();
         m_sqlManager = new SqlAccessManager(this);
+        if (m_sqlManager.selectBookmarkInfo(m_idleName) != null) {
+            m_isBookmark = true;
+        }
+        else {
+            m_isBookmark = false;
+        }
         m_girdView = (GridView)findViewById(R.id.mainGridView);
         m_girdView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -126,6 +133,10 @@ public class CardListActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * カード画像を選択したとき
+     * @param postion 選択位置
+     */
     private void onItemClickImage(int postion) {
         IdleCardInfo selectInfo = (IdleCardInfo)m_girdView.getItemAtPosition(postion);
         if (selectInfo == null) {
@@ -196,10 +207,14 @@ public class CardListActivity extends ActionBarActivity {
         //メニュー表示変更
         m_isBookmark = isBookmark;
         invalidateOptionsMenu();
-        
-        //DBに保存
-        //TODO:ブックマーク登録は未実装
-        PSUtils.toast(this, "未実装です...");
+
+        BookmarkInfo info = new BookmarkInfo(m_idleName);
+        if (m_isBookmark) {
+            m_sqlManager.insertBookmarkInfo(info);
+        }
+        else {
+            m_sqlManager.deleteBookmarkInfo(info);
+        }
     }
 
     /**

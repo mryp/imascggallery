@@ -4,6 +4,8 @@ import android.database.DatabaseUtils;
 
 import net.poringsoft.imascggallery.utils.KanamojiCharUtils;
 
+import java.util.List;
+
 /**
  * SQL検索・並び替え用文字列生成ヘルパークラス 
  * Created by mry on 15/01/20.
@@ -12,7 +14,8 @@ public class SqlSelectHelper {
     //定数
     //---------------------------------------------------
     //検索コマンド
-    public static final String CMD_ALL = "ALL";  //すべて表示
+    public static final String CMD_ALL = "ALL";             //すべて表示
+    public static final String CMD_BOOKMARK = "BOOKMARK";   //お気に入り
     public static final String CMD_NAME_LIST = "NAMELIST";  //名前列挙
 
     //並び替え種別
@@ -72,6 +75,34 @@ public class SqlSelectHelper {
         }
 
         return select;
+    }
+
+    /**
+     * 指定した検索分がブックマーク検索かどうか
+     * @param searchText 検索分
+     * @return ブックマーク検索のときはtrue
+     */
+    public static boolean isBookmarkCommand(String searchText) {
+        return searchText.startsWith(CMD_BOOKMARK);
+    }
+
+    /**
+     * 名前リストからアイドルプロフィールを検索するときの名前リストコマンドに変換して返す
+     * @param nameList 名前リスト
+     * @return 名前列挙コマンド
+     */
+    public static String createCommandNameList(List<String> nameList) {
+        StringBuilder sb = new StringBuilder();
+        for (String name : nameList) {
+            sb.append(name);
+            sb.append(",");
+        }
+        String commnad = sb.toString();
+        if (commnad.endsWith(",")) {
+            commnad = commnad.substring(0, commnad.length() - 1);
+        }
+
+        return CMD_NAME_LIST + ":" + commnad;
     }
 
     /**
@@ -162,11 +193,7 @@ public class SqlSelectHelper {
      * @return セレクト文
      */
     public static String createSelectIldeCard(String searchText){
-        String nameQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
-
-        return SqlDao.IDLE_CARD_COLUMN_NAME
-                + " LIKE "
-                + nameQuery;
+        return SqlDao.IDLE_CARD_COLUMN_NAME + "=" + DatabaseUtils.sqlEscapeString(searchText);
     }
 
     /**
@@ -175,8 +202,15 @@ public class SqlSelectHelper {
      * @return セレクト文
      */
     public static String createSelectIldeCardFromAlbumId(int albumId) {
-        return SqlDao.IDLE_CARD_COLUMN_ALBUM_ID
-                + "="
-                + String.valueOf(albumId);
+        return SqlDao.IDLE_CARD_COLUMN_ALBUM_ID + "=" + String.valueOf(albumId);
+    }
+
+    /**
+     * アイドル名からブックマーク登録情報を検索するセレクト分を生成する
+     * @param searchText アイドル名
+     * @return セレクト分
+     */
+    public static String createBookmarkNameSelect(String searchText) {
+        return SqlDao.BOOKMARK_COLUMN_NAME + "=" + DatabaseUtils.sqlEscapeString(searchText);
     }
 }

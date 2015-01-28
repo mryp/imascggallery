@@ -342,4 +342,128 @@ public class SqlAccessManager {
 
         return infoList;
     }
+
+    //ブックマーク関連
+    //---------------------------------------------
+    /**
+     * ブックマーク情報を追加する
+     * すでに追加されているときは更新を行う
+     * @param info ブックマーク情報
+     */
+    public void insertBookmarkInfo(BookmarkInfo info)
+    {
+        SqlDao dao = open(OPEN_MODE_READWRITE);
+        if (dao == null)
+        {
+            return;
+        }
+
+        dao.beginTransaction();
+        try
+        {
+            if (dao.selectBookmarkInfo(info.getName()) == null) {
+                //追加
+                dao.insertBookmarkInfo(info);
+            }
+            else {
+                //更新
+                dao.updateBookmarkInfo(info);
+            }
+
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+    }
+
+    /**
+     * 指定したブックマーク情報の名前を持つデータを削除する
+     * 存在しない場合は何もしない
+     * @param info ブックマーク情報
+     */
+    public void deleteBookmarkInfo(BookmarkInfo info)
+    {
+        SqlDao dao = open(OPEN_MODE_READWRITE);
+        if (dao == null)
+        {
+            return;
+        }
+
+        dao.beginTransaction();
+        try
+        {
+            if (dao.selectBookmarkInfo(info.getName()) != null) {
+                //削除
+                dao.deleteBookmarkInfo(info);
+            }
+
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+    }
+
+    /**
+     * 指定した名前を持つブックマーク情報を検索する
+     * 見つからなかったときはnullを返す
+     * @param name アイドル名
+     * @return ブックマーク情報
+     */
+    public BookmarkInfo selectBookmarkInfo(String name)
+    {
+        SqlDao dao = open(OPEN_MODE_READONLY);
+        if (dao == null)
+        {
+            return null;
+        }
+
+        BookmarkInfo info;
+        dao.beginTransaction();
+        try
+        {
+            info = dao.selectBookmarkInfo(name);
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+
+        return info;
+    }
+
+    /**
+     * すべてのブックマーク情報を取得する
+     * @return ブックマーク情報リスト
+     */
+    public List<BookmarkInfo> selectBookmarkInfoAll()
+    {
+        SqlDao dao = open(OPEN_MODE_READONLY);
+        if (dao == null)
+        {
+            return new ArrayList<>();
+        }
+
+        List<BookmarkInfo> infoList;
+        dao.beginTransaction();
+        try
+        {
+            infoList = dao.selectBookmarkInfoAll();
+            dao.setTransactionSuccessful();
+        }
+        finally
+        {
+            dao.endTransaction();
+            dao.Close();
+        }
+
+        return infoList;
+    }
 }

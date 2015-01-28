@@ -16,17 +16,6 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
     //テーブル定義
     //-------------------------------------------------------
     /**
-     * お気に入りテーブル
-     */
-    private static final String CREATE_SQL_FAVORITE_DATA = "create table favorite"
-            + "("
-            + "rowid integer primary key autoincrement, "
-            + "m_name text,"
-            + "m_index integer,"
-            + "m_uptime integer"
-            + ")";
-
-    /**
      * アイドルカード情報データ
      */
     private static final String CREATE_SQL_IDLE_CARD_DATA = "create table idlecardtbl"
@@ -87,6 +76,17 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
             + "m_charName text"
             + ")";
 
+    /**
+     * アイドルブックマーク
+     */
+    private static final String CREATE_SQL_BOKMARK_DATA = "create table bookmarktbl"
+            + "("
+            + "rowid integer primary key autoincrement, "
+            + "m_name text,"
+            + "m_index integer,"
+            + "m_uptime integer"
+            + ")";
+
     //メソッド
     //-------------------------------------------------------
     /**
@@ -121,7 +121,7 @@ public class SqlAccessHelper extends SQLiteOpenHelper {
      */
     private void createTableVer1(SQLiteDatabase db)
     {
-        db.execSQL(CREATE_SQL_FAVORITE_DATA);
+        db.execSQL(CREATE_SQL_BOKMARK_DATA);
         db.execSQL(CREATE_SQL_IDLE_CARD_DATA);
         db.execSQL(CREATE_SQL_IDLE_PROFILE_DATA);
         db.execSQL(CREATE_SQL_IDLE_UNIT_DATA);

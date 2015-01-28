@@ -48,8 +48,8 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private static final Map<String, String> DEF_MAP_CATEGORY = new LinkedHashMap<String, String>(){
         {
-            put("お気に入り", "お気に入り");
-            put("すべて", SqlSelectHelper.CMD_ALL + ":ALL");
+            put("お気に入り", SqlSelectHelper.CMD_BOOKMARK + ":" + SqlSelectHelper.CMD_BOOKMARK);
+            put("すべて", SqlSelectHelper.CMD_ALL + ":" + SqlSelectHelper.CMD_ALL);
         }
     };
     
