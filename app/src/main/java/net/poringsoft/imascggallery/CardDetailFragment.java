@@ -129,6 +129,7 @@ public class CardDetailFragment extends Fragment {
         PSDebug.d("call");
 
         outState.putInt(ARG_SELECT_ALBUM_ID, m_selectAlbumId);
+        outState.putBoolean(ARG_SHOW_CARD_STATUS, m_showCardStatus);
     }
 
     /**
@@ -156,7 +157,7 @@ public class CardDetailFragment extends Fragment {
             statusLayout.setVisibility(View.VISIBLE);
 
             TextView headTextView = (TextView)parentView.findViewById(R.id.headTextView);
-            String headText = "属性\nレアリティ\nコスト\nアルバム攻\nアルバム守\nMAX攻\nMAX守\nMAX確認\nMAX攻/コスト\nMAX守/コスト\n特技名\n対象属性\n攻守\n効果\n備考";
+            String headText = "属性\nレアリティ\nコスト\nアルバム攻\nアルバム守\n特技名\n備考";
             headTextView.setText(headText);
 
             TextView detailTextView = (TextView)parentView.findViewById(R.id.detailTextView);
@@ -165,15 +166,7 @@ public class CardDetailFragment extends Fragment {
                     + cardInfo.getCost() + "\n"
                     + cardInfo.getAttack() + "\n"
                     + cardInfo.getDefense() + "\n"
-                    + cardInfo.getMaxAttack() + "\n"
-                    + cardInfo.getMaxDefense() + "\n"
-                    + cardInfo.getMaxConfirmed() + "\n"
-                    + cardInfo.getAttackCospa() + "\n"
-                    + cardInfo.getDefenseCospa() + "\n"
                     + toDetailStringData(cardInfo.getSkillName()) + "\n"
-                    + toDetailStringData(cardInfo.getTargetAttr()) + "\n"
-                    + toDetailStringData(cardInfo.getAttdefType()) + "\n"
-                    + toDetailStringData(cardInfo.getSkillEffect()) + "\n"
                     + toDetailStringData(cardInfo.getRemarks());
             detailTextView.setText(detailText);
         }
