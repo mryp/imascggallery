@@ -30,7 +30,6 @@ public class CardDetailFragment extends Fragment {
     //定数
     //---------------------------------------------------------------------
     private static final String ARG_SELECT_ALBUM_ID = "album_id";
-    private static final String ARG_SHOW_CARD_STATUS = "show_card_status";
 
     //フィールド
     //---------------------------------------------------------------------
@@ -46,11 +45,10 @@ public class CardDetailFragment extends Fragment {
      * @param albumId アルバムID
      * @return インスタンス
      */
-    public static CardDetailFragment newInstance(int albumId, boolean showCardStatus) {
+    public static CardDetailFragment newInstance(int albumId) {
         CardDetailFragment fragment = new CardDetailFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SELECT_ALBUM_ID, albumId);
-        args.putBoolean(ARG_SHOW_CARD_STATUS, showCardStatus);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,14 +94,12 @@ public class CardDetailFragment extends Fragment {
         if (savedInstanceState != null) {
             //型番の復元
             m_selectAlbumId = savedInstanceState.getInt(ARG_SELECT_ALBUM_ID);
-            m_showCardStatus = savedInstanceState.getBoolean(ARG_SHOW_CARD_STATUS);
         }
         else {
             //親画面からの型番の取得
             Bundle argment = this.getArguments();
             if (argment != null) {
                 m_selectAlbumId = argment.getInt(ARG_SELECT_ALBUM_ID);
-                m_showCardStatus = argment.getBoolean(ARG_SHOW_CARD_STATUS);
             }
         }
 
@@ -111,6 +107,7 @@ public class CardDetailFragment extends Fragment {
         WindowManager wm = (WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getSize(m_dispSize);
         SqlAccessManager sqlManager = new SqlAccessManager(getActivity());
+        m_showCardStatus = EnvOption.getViewShowCardParam(getActivity());
 
         //型番からカードデータを取得し表示にセットする
         IdleCardInfo cardInfo = sqlManager.selectIdleCardInfoFromAlbumId(m_selectAlbumId);
@@ -129,7 +126,6 @@ public class CardDetailFragment extends Fragment {
         PSDebug.d("call");
 
         outState.putInt(ARG_SELECT_ALBUM_ID, m_selectAlbumId);
-        outState.putBoolean(ARG_SHOW_CARD_STATUS, m_showCardStatus);
     }
 
     /**

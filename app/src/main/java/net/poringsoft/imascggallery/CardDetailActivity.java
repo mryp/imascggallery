@@ -232,7 +232,7 @@ public class CardDetailActivity extends ActionBarActivity {
          */
         @Override
         public Fragment getItem(int position) {
-            return CardDetailFragment.newInstance(m_cardList.get(position).getAlbumId(), false);
+            return CardDetailFragment.newInstance(m_cardList.get(position).getAlbumId());
         }
 
         /**
