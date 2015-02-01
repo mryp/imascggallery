@@ -23,6 +23,11 @@ public class EnvOption {
     //設定値
     public static final String KEY_MAIN_LIST_SORT_TYPE = " main_list_sort_type";     //メインリストの並び替え値
 
+    //表示設定
+    public static final String KEY_VIEW_SHOW_IDOL_BIRTHDAY = "view_show_idol_birthday"; //誕生日情報の表示
+    public static final String KEY_VIEW_SHOW_CARD_PARAM = "view_show_card_param";       //カードパラメーターの表示
+    public static final String KEY_VIEW_SHOW_CARD_FRAME = "view_show_card_frame";       //カードフレームの表示
+
     //共通メソッド
     //---------------------------------------------------------
     /**
@@ -122,4 +127,36 @@ public class EnvOption {
     public static int getMainListSortType(Context context) {
         return getInt(context, KEY_MAIN_LIST_SORT_TYPE, SqlSelectHelper.SELECT_MAIN_SORT_ROWID_ASC);
     }
+
+    //表示関連
+    //-------------------------------------------
+    /**
+     * アイドル情報一覧で誕生日・星座情報を表示するかどうか
+     * @param context コンテキスト
+     * @return 表示するときはtrue
+     */
+    public static boolean getViewShowIdolBirthday(Context context) {
+        return getBoolean(context, KEY_VIEW_SHOW_IDOL_BIRTHDAY, false);
+    }
+
+    /**
+     * カード情報パラメーターを表示するかどうか
+     * @param context コンテキスト
+     * @return 表示するときはtrue
+     */
+    public static boolean getViewShowCardParam(Context context) {
+        return getBoolean(context, KEY_VIEW_SHOW_CARD_PARAM, false);
+    }
+
+    /**
+     * カードフレームを表示するかどうか（Sレア以上のときのみ）
+     * @param context コンテキスト
+     * @return 表示するときはtrue
+     */
+    public static boolean getViewShowCardFrame(Context context) {
+        return getBoolean(context, KEY_VIEW_SHOW_CARD_FRAME, false);
+    }
+
+
+
 }

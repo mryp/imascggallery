@@ -240,8 +240,7 @@ public class MainActivity extends ActionBarActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.action_settings:
-                PSUtils.toast(this, "未実装");
-                //startSetting();
+                startSetting();
                 return true;
             case R.id.action_update:
                 startUpdate();
@@ -315,9 +314,8 @@ public class MainActivity extends ActionBarActivity
      * 設定画面へ遷移する
      */
     private void startSetting() {
-        //TODO: 設定画面は未実装
-        //Intent intent = new Intent(this, PrefActivity.class);
-        //this.startActivityForResult(intent, REQ_CODE_PREF);
+        Intent intent = new Intent(this, PrefActivity.class);
+        this.startActivityForResult(intent, REQ_CODE_PREF);
     }
 
     /**

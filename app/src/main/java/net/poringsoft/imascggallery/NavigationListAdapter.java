@@ -63,7 +63,7 @@ public class NavigationListAdapter extends BaseSectionAdapter<NaviSectionHeaderD
         if (holder != null) {
             NaviSectionHeaderData headerData = sectionList.get(section);
             holder.titleTxt.setText(headerData.getTitle());
-            holder.titleTxt.setTextColor(resources.getColor(R.color.main_primary_dark));
+            holder.titleTxt.setTextColor(resources.getColor(R.color.main_accent));
         }
         return convertView;
     }

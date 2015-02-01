@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">シンデレラギャラリー</string>
+    <string name="url_poringsoft">http://www.poringsoft.net/</string>
 
     <!-- メニュー文字列 -->
     <string name="action_settings">設定</string>

@@ -9,8 +9,4 @@
     <color name="main_text">#E0F2F1</color>
     <color name="main_select_text">#B0BEC5</color>
     <color name="main_text_dark">#B0BEC5</color>
-
-    <color name="ability_text_regular">#FF0000</color>
-    <color name="ability_text_arrival">#0000FF</color>
-    <color name="ability_text_starting">#00AA00</color>
 </resources>

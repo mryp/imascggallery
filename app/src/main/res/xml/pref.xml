@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="表示設定">
+        <CheckBoxPreference
+            android:title="誕生日・星座を表示する"
+            android:summary="アイドル一覧画面で誕生日・星座を表示する"
+            android:key="view_show_idol_birthday"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:title="カードパラメーターを表示する"
+            android:summary="カード詳細画面でカードの攻・守情報パラメーターを表示する"
+            android:key="view_show_card_param"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:title="カードフレームを表示する"
+            android:summary="Sレア以上のカード画像のフレームを表示する（レア以下のカードは常にカードフレームを表示します）"
+            android:key="view_show_card_frame"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="検索機能">
+        <PreferenceScreen
+            android:title="検索履歴削除"
+            android:summary="検索履歴をすべて削除する"
+            android:key="privacy_del_search_history" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="バージョン情報">
+        <PreferenceScreen
+            android:title="version 1.0.0"
+            android:summary="Copyright (C) 2015 PORING SOFT"
+            android:key="version_info" />
+    </PreferenceCategory>
+</PreferenceScreen>
