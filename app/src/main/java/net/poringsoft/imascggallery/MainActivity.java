@@ -249,6 +249,9 @@ public class MainActivity extends ActionBarActivity
             case R.id.action_search:
                 onSearchRequested();
                 return true;
+            case R.id.action_jump_official:
+                startJumpWebSite(getString(R.string.url_official));
+                return true;
             case R.id.action_sort:
                 //サブメニューを使用するため何もしない
                 return true;

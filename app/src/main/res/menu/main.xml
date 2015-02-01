@@ -59,7 +59,10 @@
     <item android:id="@+id/action_update" 
         android:title="@string/action_update"
         app:showAsAction="never"/>
-    <item android:id="@+id/action_settings" 
+    <item android:id="@+id/action_jump_official"
+        android:title="@string/action_jump_official"
+        app:showAsAction="never"/>
+    <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
 </menu>
