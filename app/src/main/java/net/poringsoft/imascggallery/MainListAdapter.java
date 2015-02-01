@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleProfileInfo;
 
@@ -34,7 +35,7 @@ public class MainListAdapter  extends BaseAdapter {
         m_context = context;
         m_idleList = cardList;
         m_layoutInf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        m_showBirthday = false;
+        m_showBirthday = EnvOption.getViewShowIdolBirthday(context);
     }
 
     /**

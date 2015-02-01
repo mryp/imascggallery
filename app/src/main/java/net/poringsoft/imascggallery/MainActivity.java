@@ -119,7 +119,7 @@ public class MainActivity extends ActionBarActivity
         }
         if (m_isReloadCardList) {
             m_isReloadCardList = false;
-            startFragment(m_title.toString(), m_searchText, false);
+            startFragment(m_title.toString(), m_searchText, true);
         }
         m_navigationDrawerFragment.listChanged();
     }
@@ -175,6 +175,7 @@ public class MainActivity extends ActionBarActivity
         if (!isReload && topFragment != null && topFragment instanceof MainListFragment) {
             MainListFragment listFragment = (MainListFragment)topFragment;
             if (listFragment.getArgTitle().equals(title) && listFragment.getArgSearchText().equals(searchText)) {
+                PSDebug.d("no change");
                 return; //同じなので処理しない
             }
         }
