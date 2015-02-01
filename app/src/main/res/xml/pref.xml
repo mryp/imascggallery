@@ -17,7 +17,14 @@
             android:key="view_show_card_frame"
             android:defaultValue="true" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="検索機能">
+    <PreferenceCategory android:title="データ設定">
+        <EditTextPreference
+            android:title="データファイルURL"
+            android:summary="アイドル・カードデータを取得するためのZIPファイルのURL"
+            android:key="data_download_url"
+            android:defaultValue="@string/url_download_data" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="検索設定">
         <PreferenceScreen
             android:title="検索履歴削除"
             android:summary="検索履歴をすべて削除する"

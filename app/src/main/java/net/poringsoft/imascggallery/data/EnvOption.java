@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.preference.PreferenceManager;
 
+import net.poringsoft.imascggallery.R;
 import net.poringsoft.imascggallery.utils.PSDebug;
 
 /**
@@ -27,6 +28,11 @@ public class EnvOption {
     public static final String KEY_VIEW_SHOW_IDOL_BIRTHDAY = "view_show_idol_birthday"; //誕生日情報の表示
     public static final String KEY_VIEW_SHOW_CARD_PARAM = "view_show_card_param";       //カードパラメーターの表示
     public static final String KEY_VIEW_SHOW_CARD_FRAME = "view_show_card_frame";       //カードフレームの表示
+
+    //データ設定
+    public static final String KEY_DATA_DOWNLOAD_URL = "data_download_url";             //データ取得URL
+
+
 
     //共通メソッド
     //---------------------------------------------------------
@@ -157,6 +163,16 @@ public class EnvOption {
         return getBoolean(context, KEY_VIEW_SHOW_CARD_FRAME, false);
     }
 
+    //データ関連
+    //-------------------------------------------
+    /**
+     * アイドル・カードデータの取得URL
+     * @param context コンテキスト
+     * @return URL
+     */
+    public static String getDataDownloadUrl(Context context) {
+        return getString(context, KEY_DATA_DOWNLOAD_URL, context.getString(R.string.url_download_data));
+    }
 
 
 }

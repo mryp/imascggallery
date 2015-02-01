@@ -342,7 +342,7 @@ public class MainActivity extends ActionBarActivity
                 .setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         m_updateTask = new UpdateAsyncTask();
-                        m_updateTask.execute("https://github.com/mryp/imascggallery-data/archive/master.zip");
+                        m_updateTask.execute(EnvOption.getDataDownloadUrl(MainActivity.this));
                     }
                 })
                 .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
@@ -366,6 +366,7 @@ public class MainActivity extends ActionBarActivity
         private static final int RET_ERROR_SAVE = 2;
         private static final int RET_ERROR_LOAD = 3;
         private static final int RET_ERROR_CANCEL = 4;
+        private static final int RET_ERROR_URL = 5;
 
         /**
          * 前処理
@@ -385,6 +386,10 @@ public class MainActivity extends ActionBarActivity
         protected Integer doInBackground(String... text) {
             String url = text[0];
             PSDebug.d("call url=" + url);
+
+            if ( ! url.endsWith(".zip")) {
+                return RET_ERROR_URL;
+            }
 
             String outputPath = EnvPath.getRootDirPath() + "data.zip";
             PSDebug.d("outputPath=" + outputPath);
@@ -475,6 +480,9 @@ public class MainActivity extends ActionBarActivity
                     break;
                 case RET_ERROR_LOAD:
                     message = "データの読み込みに失敗しました";
+                    break;
+                case RET_ERROR_URL:
+                    message = "ダウンロードURLが不正です";
                     break;
                 case RET_ERROR_CANCEL:
                     message = "キャンセルされました";
