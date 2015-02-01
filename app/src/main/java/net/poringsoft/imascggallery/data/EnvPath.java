@@ -32,9 +32,19 @@ public class EnvPath {
     //---------------------------------------------------------
     /**
      * 初期化
+     * @param context コンテキスト
      */
-    public static void init() {
-        m_rootDir = "";
+    public static void init(Context context) {
+        File baseDir = context.getExternalFilesDir(null);
+        if (baseDir != null) {
+            m_rootDir = getDirPath(baseDir.getPath());
+        }
+        else {
+            File sdcard = Environment.getExternalStorageDirectory();
+            if (sdcard != null) {
+                m_rootDir = getDirPath(sdcard.getPath() + "/" + NAME_MAIN_DIR);
+            }
+        }
     }
 
     /**
@@ -42,17 +52,6 @@ public class EnvPath {
      * アプリケーションデータはこのフォルダ以下に保存する
      */
     public static String getRootDirPath() {
-        if (m_rootDir.equals("")) {
-            //TODO: どこかのタイミングで/Android/data/net.poringsoft.imascggalleryに変更する
-            File sdcard = Environment.getExternalStorageDirectory();
-            if (sdcard == null || sdcard.equals("")) {
-                return "";
-            }
-
-            m_rootDir = getDirPath(sdcard.getPath() + "/" + NAME_MAIN_DIR);
-            createNomeidaFile(m_rootDir);
-        }
-
         return m_rootDir;
     }
 

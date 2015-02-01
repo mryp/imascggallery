@@ -136,8 +136,7 @@ public class PSUtils {
 
     /**
      * 文字列リストを整数リストとして降順で並び替える
-     * @param strList
-     * @return
+     * @param strList 文字列リスト
      */
     public static void sortStringToIntDesc(List<String> strList)
     {
@@ -263,7 +262,6 @@ public class PSUtils {
             context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);		//スリープ禁止
         }
     }
-
 
     /**
      * バイナリデータ（画像・Flashなど）を取得しバイト配列で返す

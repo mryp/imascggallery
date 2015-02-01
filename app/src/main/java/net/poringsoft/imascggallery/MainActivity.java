@@ -1,8 +1,12 @@
 package net.poringsoft.imascggallery;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -16,11 +20,15 @@ import android.support.v4.widget.DrawerLayout;
 
 import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
+import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.IdleInfoLoader;
 import net.poringsoft.imascggallery.data.SearchSuggestionProvider;
 import net.poringsoft.imascggallery.data.SqlSelectHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
+import net.poringsoft.imascggallery.utils.PSFileUtils;
 import net.poringsoft.imascggallery.utils.PSUtils;
+
+import java.util.List;
 
 /**
  * メイン画面Activity
@@ -41,6 +49,7 @@ public class MainActivity extends ActionBarActivity
     private NavigationDrawerFragment m_navigationDrawerFragment;
     private CharSequence m_title = "";
     private String m_searchText = "";
+    private UpdateAsyncTask m_updateTask = null;
     private boolean m_isReloadCardList = false;         //カードデータの再読み込みが必要かどうか
     private boolean m_isReloadNavigation = false;       //ナビゲーションデータの再読み込みが必要かどうか
 
@@ -326,16 +335,206 @@ public class MainActivity extends ActionBarActivity
      * データ更新開始 
      */
     private void startUpdate() {
-        //TODO: 更新中ダイアログは未実装
-        IdleInfoLoader idleHelper = new IdleInfoLoader(this);
-        boolean ret = idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getProfileFilePath()
-                , EnvPath.getHashFilePath(), EnvPath.getUnitListFilePath());
-        if (ret == false) {
-            PSUtils.toast(this, "読み込みに失敗しました。。。");
-            return;
+        String text = "データ更新を行いますか？";
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("データ更新")
+                .setMessage(text)
+                .setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        m_updateTask = new UpdateAsyncTask();
+                        m_updateTask.execute("https://github.com/mryp/imascggallery-data/archive/master.zip");
+                    }
+                })
+                .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //何もしない
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+    /**
+     * 更新処理非同期タスク
+     */
+    private class UpdateAsyncTask extends AsyncTask<String, String, Integer> {
+        private ProgressDialog m_progress = null;   //更新中表示ダイアログ
+        private boolean m_quiting = false;          //キャンセルフラグ
+
+        private static final int RET_OK = 0;
+        private static final int RET_ERROR_DOWN = 1;
+        private static final int RET_ERROR_SAVE = 2;
+        private static final int RET_ERROR_LOAD = 3;
+        private static final int RET_ERROR_CANCEL = 4;
+
+        /**
+         * 前処理
+         */
+        @Override
+        protected void onPreExecute() {
+            ProgressDialog pd = initProgressDlg(new ProgressDialog(MainActivity.this));
+            pd.setTitle("データ更新");
+            pd.setMessage("準備中...");
+            pd.show();
         }
 
-        PSUtils.toast(this, "更新に成功しました");
+        /**
+         * 実処理
+         */
+        @Override
+        protected Integer doInBackground(String... text) {
+            String url = text[0];
+            PSDebug.d("call url=" + url);
+
+            String outputPath = EnvPath.getRootDirPath() + "data.zip";
+            PSDebug.d("outputPath=" + outputPath);
+
+            //データのダウンロード
+            try {
+                publishProgress("データダウンロード中...");
+                String path = PSFileUtils.downloadFile(url, outputPath);
+                if (path == null) {
+                    return RET_ERROR_DOWN;
+                }
+            }
+            catch (Exception e) {
+                PSDebug.d("ダウンロード処理失敗 e=" + e.getMessage());
+                e.printStackTrace();
+                return RET_ERROR_DOWN;
+            }
+            if (m_quiting) {
+                return RET_ERROR_CANCEL;
+            }
+
+            //ZIPファイル展開
+            try {
+                publishProgress("ZIPファイル展開中...");
+                List<String> fileList = PSFileUtils.decodeZipFile(outputPath, EnvPath.getRootDirPath());
+                if (fileList == null || fileList.size() == 0) {
+                    return RET_ERROR_SAVE;
+                }
+            }
+            catch (Exception e) {
+                PSDebug.d("ZIP展開処理失敗 e=" + e.getMessage());
+                e.printStackTrace();
+                return RET_ERROR_SAVE;
+            }
+            if (m_quiting) {
+                return RET_ERROR_CANCEL;
+            }
+
+            //ファイル読み込み
+            try
+            {
+                publishProgress("ファイル読み込み中...");
+                IdleInfoLoader idleHelper = new IdleInfoLoader(MainActivity.this);
+                if ( ! idleHelper.loadFile(EnvPath.getAlbumFilePath(), EnvPath.getProfileFilePath()
+                        , EnvPath.getHashFilePath(), EnvPath.getUnitListFilePath())) {
+                    return RET_ERROR_LOAD;
+                }
+            }
+            catch (Exception e) {
+                PSDebug.d("データ読み込み処理失敗 e=" + e.getMessage());
+                e.printStackTrace();
+                return RET_ERROR_LOAD;
+            }
+
+            return RET_OK;
+        }
+
+        /**
+         * 処理状況
+         * @param values 状況内容
+         */
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+
+            String text = values[0];
+            m_progress.setMessage(text);
+        }
+
+        /**
+         * 後処理
+         */
+        @Override
+        protected void onPostExecute(Integer result) {
+            PSDebug.d("call");
+            closeProgressDlg();
+
+            String message = "";
+            switch (result) {
+                case RET_OK:
+                    message = "更新成功！";
+                    break;
+                case RET_ERROR_DOWN:
+                    message = "データのダウンロードに失敗しました";
+                    break;
+                case RET_ERROR_SAVE:
+                    message = "データの保存に失敗しました";
+                    break;
+                case RET_ERROR_LOAD:
+                    message = "データの読み込みに失敗しました";
+                    break;
+                case RET_ERROR_CANCEL:
+                    message = "キャンセルされました";
+                    break;
+            }
+            PSUtils.toast(MainActivity.this, message);
+
+            //再読み込み
+            startFragment(m_title.toString(), m_searchText, true);
+        }
+
+        /**
+         * ダウンロード中ダイアログを表示する
+         * ダイアログ表示中は画面回転・スリープを禁止する
+         * @param progress ダイアログオブジェクト
+         * @return ダイアログオブジェクト
+         */
+        private ProgressDialog initProgressDlg(ProgressDialog progress)
+        {
+            PSUtils.DisplayTurnEnable(MainActivity.this, true);
+            m_progress = progress;
+            m_progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            m_progress.setIndeterminate(false);
+            m_progress.setCancelable(false);
+            m_progress.setTitle(" ");
+            m_progress.setMessage(" ");
+            m_progress.setButton(DialogInterface.BUTTON_NEGATIVE, "キャンセル", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    m_quiting = true;	//キャンセルフラグを立てる
+                }
+            });
+
+            return m_progress;
+        }
+
+        /**
+         * ダイアログを閉じる
+         * 画面回転・スリープの禁止状態を解除する
+         */
+        private void closeProgressDlg()
+        {
+            if (m_progress == null) {
+                return;	//まだ開いてすらいないので何もしない
+            }
+            try {
+                if (m_progress.isShowing()) {
+                    m_progress.setCancelable(true);
+                    m_progress.dismiss();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                PSDebug.d("ダイアログクローズ失敗（すでに閉じられている可能性あり）");
+            }
+            finally {
+                PSUtils.DisplayTurnEnable(MainActivity.this, false);
+            }
+        }
+
     }
 
     /**

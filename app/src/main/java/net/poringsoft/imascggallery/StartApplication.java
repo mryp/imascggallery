@@ -31,7 +31,8 @@ public class StartApplication extends Application {
         PSDebug.initDebugFlag(getApplicationContext());
 
         //初期化
-        EnvPath.init();
+        EnvPath.init(getApplicationContext());
+        PSDebug.d("RootPath=" + EnvPath.getRootDirPath());
 
         //画像ライブラリの初期化
         //https://github.com/nostra13/Android-Universal-Image-Loader

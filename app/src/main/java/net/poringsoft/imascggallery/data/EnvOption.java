@@ -15,7 +15,7 @@ public class EnvOption {
     //---------------------------------------------------------
     //通信関連
     public static final String NET_GET_AGENT = "Mozilla/5.0 (Linux; Android; ja-jp;)";
-    public static final int NET_GET_TIMEOUT = 10000;
+    public static final int NET_GET_TIMEOUT = 20000;
     
     //カード情報
     public static final Point CARD_IMAGE_SIZE = new Point(640, 800);   //カード実サイズ
