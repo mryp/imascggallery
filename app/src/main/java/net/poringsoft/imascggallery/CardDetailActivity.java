@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleCardInfo;
 import net.poringsoft.imascggallery.data.SqlAccessManager;
@@ -304,7 +305,7 @@ public class CardDetailActivity extends ActionBarActivity {
      */
     private void copyImageUrl() {
         IdleCardInfo cardInfo = getCardInfoFromAlbumId(m_infoList, m_selectAlbumId);
-        String url = EnvPath.getIdleCardImageUrlDirect(cardInfo.getImageHash());
+        String url = EnvPath.getIdleCardImageUrlDirect(cardInfo, EnvOption.getViewShowCardFrame(this));
 
         ClipboardManager clipboardManager = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData.Item item = new ClipData.Item(url);

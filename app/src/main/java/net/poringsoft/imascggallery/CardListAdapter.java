@@ -33,6 +33,7 @@ public class CardListAdapter extends BaseAdapter {
     private List<IdleCardInfo> m_infoList;
     private Point m_dispSize = new Point();
     private int m_gridGolumns = 0;
+    private boolean m_showCardFrame = true;
 
 
     //メソッド
@@ -46,6 +47,7 @@ public class CardListAdapter extends BaseAdapter {
     public CardListAdapter(Context context, List<IdleCardInfo> cardList, int columns) {
         m_context = context;
         m_infoList = cardList;
+        m_showCardFrame = EnvOption.getViewShowCardFrame(context);
 
         WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getSize(m_dispSize);
@@ -112,7 +114,7 @@ public class CardListAdapter extends BaseAdapter {
         IdleCardInfo info = m_infoList.get(position);
         imageView.setImageBitmap(null);
         if (!info.getImageHash().equals("")) {
-            ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(info.getImageHash(), true), imageView);
+            ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(info, m_showCardFrame), imageView);
         }
         
         return imageView;

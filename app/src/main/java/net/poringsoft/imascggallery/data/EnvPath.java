@@ -1,5 +1,6 @@
 package net.poringsoft.imascggallery.data;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
@@ -141,10 +142,24 @@ public class EnvPath {
 
     /**
      * カード画像表示用画像（640x800）の画像URLを取得する
-     * @param hash 画像ハッシュキー
+     * @param cardInfo カード情報
+     * @param isWaku 枠有かどうか
      * @return URL
      */
-    public static String getIdleCardImageUrl(String hash, boolean isWaku)
+    public static String getIdleCardImageUrl(IdleCardInfo cardInfo, boolean isWaku) {
+        if ( ! cardInfo.getRarity().contains("SR")){
+            isWaku = true; //レア以下は枠なしにできない
+        }
+        return getIdleCardImageUrl(cardInfo.getImageHash(), isWaku);
+    }
+
+    /**
+     * カード画像表示用画像（640x800）の画像URLを取得する
+     * @param hash 画像ハッシュキー
+     * @param isWaku 枠有かどうか
+     * @return URL
+     */
+    private static String getIdleCardImageUrl(String hash, boolean isWaku)
     {
         if (isWaku) {
             return "http://sp.pf-img-a.mbga.jp/12008305/?guid=ON&url=http%3A%2F%2F125.6.169.35%2Fidolmaster%2Fimage_sp%2Fcard%2Fl%2F"
@@ -158,13 +173,34 @@ public class EnvPath {
 
     /**
      * カード画像の直リンク用画像URLを取得する
-     * @param hash 画像ハッシュキー
+     * @param cardInfo カード情報
+     * @param isWaku  枠有かどうか
      * @return URL
      */
-    public static String getIdleCardImageUrlDirect(String hash)
+    public static String getIdleCardImageUrlDirect(IdleCardInfo cardInfo, boolean isWaku)
     {
-        return "http://125.6.169.35/idolmaster/image_sp/card/l/"
-                + hash + ".jpg";
+        if ( ! cardInfo.getRarity().contains("SR")){
+            isWaku = true; //レア以下は枠なしにできない
+        }
+        return getIdleCardImageUrlDirect(cardInfo.getImageHash(), isWaku);
+    }
+
+    /**
+     * カード画像の直リンク用画像URLを取得する
+     * @param hash 画像ハッシュキー
+     * @param isWaku  枠有かどうか
+     * @return URL
+     */
+    private static String getIdleCardImageUrlDirect(String hash, boolean isWaku)
+    {
+        if (isWaku) {
+            return "http://125.6.169.35/idolmaster/image_sp/card/l/"
+                    + hash + ".jpg";
+        }
+        else {
+            return "http://125.6.169.35/idolmaster/image_sp/card/l_noframe/"
+                    + hash + ".jpg";
+        }
     }
 
     /**

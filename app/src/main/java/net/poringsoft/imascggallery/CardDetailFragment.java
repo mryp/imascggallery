@@ -35,6 +35,7 @@ public class CardDetailFragment extends Fragment {
     //---------------------------------------------------------------------
     private int m_selectAlbumId= 0;
     private boolean m_showCardStatus = false;
+    private boolean m_showCardFrame = true;
     private Point m_dispSize = new Point();
 
 
@@ -108,6 +109,7 @@ public class CardDetailFragment extends Fragment {
         wm.getDefaultDisplay().getSize(m_dispSize);
         SqlAccessManager sqlManager = new SqlAccessManager(getActivity());
         m_showCardStatus = EnvOption.getViewShowCardParam(getActivity());
+        m_showCardFrame = EnvOption.getViewShowCardFrame(getActivity());
 
         //型番からカードデータを取得し表示にセットする
         IdleCardInfo cardInfo = sqlManager.selectIdleCardInfoFromAlbumId(m_selectAlbumId);
@@ -145,7 +147,7 @@ public class CardDetailFragment extends Fragment {
         double viewWidth = m_dispSize.x;
         imageView.setLayoutParams(new LinearLayout.LayoutParams((int)viewWidth, (int)(viewWidth * xyPercentage)));
         if (!cardInfo.getImageHash().equals("")) {
-            ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(cardInfo.getImageHash(), true), imageView);
+            ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(cardInfo, m_showCardFrame), imageView);
         }
 
         LinearLayout statusLayout = (LinearLayout)parentView.findViewById(R.id.statusLayout);
