@@ -360,7 +360,7 @@ public class SqlDao {
     {
         IdleCardInfo cardInfo = new IdleCardInfo();
         int id = cursor.getInt(0);
-        PSDebug.d("id=" + id);
+        //PSDebug.d("id=" + id);
 
         cardInfo.setAlbumId(cursor.getInt(cursor.getColumnIndex(IDLE_CARD_COLUMN_ALBUM_ID)));
         cardInfo.setAttribute(cursor.getString(cursor.getColumnIndex(IDLE_CARD_COLUMN_ATTRIBUTE)));
@@ -486,7 +486,7 @@ public class SqlDao {
     private IdleProfileInfo createIdleProfileInfo(Cursor cursor) {
         IdleProfileInfo info = new IdleProfileInfo();
         int id = cursor.getInt(0);
-        PSDebug.d("id=" + id);
+        //PSDebug.d("id=" + id);
 
         info.setName(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_NAME)));
         info.setKana(cursor.getString(cursor.getColumnIndex(IDLE_PROFILE_COLUMN_KANA)));
@@ -599,7 +599,7 @@ public class SqlDao {
     private IdleUnitInfo createIdleUnitInfo(Cursor cursor) {
         IdleUnitInfo info = new IdleUnitInfo();
         int id = cursor.getInt(0);
-        PSDebug.d("id=" + id);
+        //PSDebug.d("id=" + id);
 
         info.setUnitName(cursor.getString(cursor.getColumnIndex(IDLE_UNIT_COLUMN_UNIT_NAME)));
         info.setCharName(cursor.getString(cursor.getColumnIndex(IDLE_UNIT_COLUMN_CHAR_NAME)));
@@ -697,7 +697,7 @@ public class SqlDao {
     private BookmarkInfo createBookmarkInfo(Cursor cursor) {
         BookmarkInfo info = new BookmarkInfo();
         int id = cursor.getInt(0);
-        PSDebug.d("id=" + id);
+        //PSDebug.d("id=" + id);
 
         info.setName(cursor.getString(cursor.getColumnIndex(BOOKMARK_COLUMN_NAME)));
         info.setIndex(cursor.getInt(cursor.getColumnIndex(BOOKMARK_COLUMN_INDEX)));

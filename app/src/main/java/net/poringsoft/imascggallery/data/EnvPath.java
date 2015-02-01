@@ -42,6 +42,7 @@ public class EnvPath {
      */
     public static String getRootDirPath() {
         if (m_rootDir.equals("")) {
+            //TODO: どこかのタイミングで/Android/data/net.poringsoft.imascggalleryに変更する
             File sdcard = Environment.getExternalStorageDirectory();
             if (sdcard == null || sdcard.equals("")) {
                 return "";

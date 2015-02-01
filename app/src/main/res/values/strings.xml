@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">シンデレラギャラリー</string>
-    
+
+    <!-- メニュー文字列 -->
     <string name="action_settings">設定</string>
     <string name="action_update">更新</string>
     <string name="action_search">検索</string>
@@ -21,9 +22,12 @@
     <string name="action_sort_waist_desc">ウエスト（降順）</string>
     <string name="action_sort_hip_asc">ヒップ（昇順）</string>
     <string name="action_sort_hip_desc">ヒップ（降順）</string>
-
     <string name="action_bookmark">お気に入り</string>
     <string name="action_share">共有</string>
     <string name="action_show_profile">プロフィール表示</string>
     <string name="action_copy_url">画像URLをコピー</string>
+
+    <!-- 検索文字列 -->
+    <string name="search_title">アイドル名検索</string>
+    <string name="search_hint">アイドル名またはよみがな</string>
 </resources>

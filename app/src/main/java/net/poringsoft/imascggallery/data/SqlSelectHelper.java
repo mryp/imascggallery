@@ -63,8 +63,8 @@ public class SqlSelectHelper {
             StringBuilder sb = new StringBuilder();
             for (String name : nameList) {
                 sb.append(SqlDao.IDLE_PROFILE_COLUMN_NAME);
-                sb.append(" LIKE ");
-                sb.append(DatabaseUtils.sqlEscapeString("%"+name+"%"));
+                sb.append("=");
+                sb.append(DatabaseUtils.sqlEscapeString(name));
                 sb.append(" OR ");
             }
             
@@ -111,11 +111,9 @@ public class SqlSelectHelper {
      * @return DB検索文字列
      */
     private static String createIdleProfileNameSelect(String searchText) {
-        String kanaSearchText = KanamojiCharUtils.zenkakuHiraganaToZenkakuKatakana(searchText);
-
         //部分一致検索
-        String nameQuery = DatabaseUtils.sqlEscapeString(searchText);
-        String kanaQuery = DatabaseUtils.sqlEscapeString("%"+kanaSearchText+"%");
+        String nameQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
+        String kanaQuery = DatabaseUtils.sqlEscapeString("%"+searchText+"%");
 
         return SqlDao.IDLE_PROFILE_COLUMN_NAME
                 + " LIKE "

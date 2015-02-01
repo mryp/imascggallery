@@ -3,6 +3,7 @@ package net.poringsoft.imascggallery;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -16,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import net.poringsoft.imascggallery.data.EnvOption;
 import net.poringsoft.imascggallery.data.EnvPath;
 import net.poringsoft.imascggallery.data.IdleInfoLoader;
+import net.poringsoft.imascggallery.data.SearchSuggestionProvider;
 import net.poringsoft.imascggallery.data.SqlSelectHelper;
 import net.poringsoft.imascggallery.utils.PSDebug;
 import net.poringsoft.imascggallery.utils.PSUtils;
@@ -142,12 +144,11 @@ public class MainActivity extends ActionBarActivity
         String queryString = intent.getStringExtra(SearchManager.QUERY);
         PSDebug.d("queryString=" + queryString);
 
-        /*
         //検索語を保存する
         SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
                 SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
         suggestions.saveRecentQuery(queryString, null);
-        */
+
         PSDebug.d("query=" + queryString);
         return queryString;
     }
@@ -196,7 +197,6 @@ public class MainActivity extends ActionBarActivity
      */
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(m_title);
     }
@@ -247,8 +247,7 @@ public class MainActivity extends ActionBarActivity
                 startUpdate();
                 return true;
             case R.id.action_search:
-                //TODO: アイドル検索機能は未実装
-                PSUtils.toast(this, "未実装");
+                onSearchRequested();
                 return true;
             case R.id.action_sort:
                 //サブメニューを使用するため何もしない
