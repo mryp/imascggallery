@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">シンデレラギャラリー</string>
-    <string name="url_poringsoft">http://www.poringsoft.net/</string>
+    <string name="url_poringsoft">http://www.poringsoft.net/?page_id=1433</string>
     <string name="url_official">http://sp.pf.mbga.jp/12008305</string>
     <string name="url_download_data">https://github.com/mryp/imascggallery-data/archive/master.zip</string>
 
