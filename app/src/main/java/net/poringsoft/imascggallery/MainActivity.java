@@ -492,6 +492,8 @@ public class MainActivity extends ActionBarActivity
 
             //再読み込み
             startFragment(m_title.toString(), m_searchText, true);
+            m_navigationDrawerFragment.resetNaviSelectPos(1);
+            m_navigationDrawerFragment.listChanged();
         }
 
         /**
