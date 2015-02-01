@@ -42,7 +42,6 @@ public class CardDetailActivity extends ActionBarActivity {
 
     private String m_idleName = "";
     private int m_selectAlbumId = 0;
-    private boolean m_isPageScroll = false;
     private List<IdleCardInfo> m_infoList = null;
 
     //メソッド
@@ -81,7 +80,6 @@ public class CardDetailActivity extends ActionBarActivity {
              */
             @Override
             public void onPageSelected(int position) {
-                m_isPageScroll = false;
                 changePage(position);
             }
 
@@ -93,17 +91,14 @@ public class CardDetailActivity extends ActionBarActivity {
             public void onPageScrollStateChanged(int state) {
                 switch (state) {
                     case ViewPager.SCROLL_STATE_DRAGGING:   //ドラッグ中
-                        m_isPageScroll = true;
                         break;
                     case ViewPager.SCROLL_STATE_SETTLING:   //止まりかけ中
                         break;
                     case ViewPager.SCROLL_STATE_IDLE:       //停止中
-                        m_isPageScroll = false;
                         break;
                 }
             }
         });
-        m_isPageScroll = false;
 
         ReadCardListAsyncTask readTask = new ReadCardListAsyncTask();
         readTask.execute(m_idleName);
