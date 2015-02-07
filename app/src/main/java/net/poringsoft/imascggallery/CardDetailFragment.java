@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.poringsoft.imascggallery.data.EnvOption;
@@ -30,6 +30,10 @@ public class CardDetailFragment extends Fragment {
     //定数
     //---------------------------------------------------------------------
     private static final String ARG_SELECT_ALBUM_ID = "album_id";
+    private static final DisplayImageOptions IMAGE_OPTIONS_CLICKVIEW = new DisplayImageOptions.Builder()    //画像表示の際にフェードを使用しない
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .build();
 
     //フィールド
     //---------------------------------------------------------------------
@@ -135,13 +139,13 @@ public class CardDetailFragment extends Fragment {
      * @param parentView レイアウトビュー
      * @param cardInfo カード情報
      */
-    private void setCardInfo(View parentView, IdleCardInfo cardInfo) {
+    private void setCardInfo(View parentView, final IdleCardInfo cardInfo) {
         //カードタイトル
         TextView titleTextView = (TextView)parentView.findViewById(R.id.titleTextView);
         titleTextView.setText(cardInfo.getNamePrefix() + cardInfo.getName() + cardInfo.getNamePost());
         
         //カード画像
-        ImageView imageView = (ImageView)parentView.findViewById(R.id.cardImageView);
+        final ImageView imageView = (ImageView)parentView.findViewById(R.id.cardImageView);
         imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         double xyPercentage = (double) EnvOption.CARD_IMAGE_SIZE.y / (double)EnvOption.CARD_IMAGE_SIZE.x;
         double viewWidth = m_dispSize.x;
@@ -149,6 +153,14 @@ public class CardDetailFragment extends Fragment {
         if (!cardInfo.getImageHash().equals("")) {
             ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(cardInfo, m_showCardFrame), imageView);
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //画像をクリックすると枠の表示・非表示を反転させる
+                m_showCardFrame = !m_showCardFrame;
+                ImageLoader.getInstance().displayImage(EnvPath.getIdleCardImageUrl(cardInfo, m_showCardFrame), imageView, IMAGE_OPTIONS_CLICKVIEW);
+            }
+        });
 
         LinearLayout statusLayout = (LinearLayout)parentView.findViewById(R.id.statusLayout);
         if (m_showCardStatus) {
